@@ -1,6 +1,22 @@
 import streamlit as st
 
-st.sidebar.title('this is sidebar')
+# sidebar 영역
+# st.sidebar.title('this is sidebar')
+# st.logo("logo.jpg")
+pages = {
+    "Your account": [
+        st.Page("create_account.py", title="Create your account"),
+        st.Page("manage_account.py", title="Manage your account")
+    ],
+    "Resources": [
+        st.Page("learn.py", title="Learn about us"),
+        st.Page("trial.py", title="Try it out")
+    ]
+}
+
+pg = st.navigation(pages)
+pg.run()
+
 
 st.title('this is title')
 st.header('this is header')
