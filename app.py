@@ -1,33 +1,35 @@
 import streamlit as st
+from streamlit_option_menu import option_menu
 
-# sidebar 영역
-# st.sidebar.title('this is sidebar')
-# st.logo("logo.jpg")
-pages = {
-    "Your account": [
-        st.Page("create_account.py", title="Create your account"),
-        st.Page("manage_account.py", title="Manage your account")
-    ],
-    "Resources": [
-        st.Page("learn.py", title="Learn about us"),
-        st.Page("trial.py", title="Try it out")
-    ]
-}
+# 페이지 설정
+st.set_page_config(
+    page_title="My Sports App",
+    page_icon="⚾",  # 흰 야구공 이모지 사용
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 
-pg = st.navigation(pages)
-pg.run()
+# 사이드바 로고 설정
+st.sidebar.markdown(
+    """
+    <div style="text-align: center;">
+        <a href="?page=main">
+            <span style="font-size: 48px;">⚾</span>
+        </a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-
-st.title('this is title')
-st.header('this is header')
-st.subheader('this is subheader')
-
-tab1, tab2 = st.tabs(['Tab A', 'Tab B'])
-
-with tab1:
-    # tab A 를 누르면 표시될 내용
-    st.write('hello')
-
-with tab2:
-    # tab B를 누르면 표시될 내용
-    st.write('hi')
+with st.sidebar:
+    choose = option_menu(
+        "Menu",
+        ["기록실", "오늘의 경기", "소속 팀", "마이페이지"],
+        default_index=0,
+        styles={
+            "container": {"padding": "5!important", "background-color": "#ffffff"},
+            "icon": {"color": "white", "font-size": "25px"}, 
+            "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+            "nav-link-selected": {"background-color": "#191848"},
+        }
+    )
