@@ -24,16 +24,15 @@ st.sidebar.markdown(
 with st.sidebar:
     choose = option_menu(
         "Menu",
-        ["기록실", "오늘의 경기", "소속 팀", "마이페이지"],
+        ["메인", "기록실", "오늘의 경기", "소속 팀", "마이페이지"],
         default_index=0,
         styles={
             "container": {"padding": "5!important", "background-color": "#ffffff"},
-            "icon": {"color": "white", "font-size": "25px"}, 
-            "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+            "icon": {"color": "white", "font-size": "25px"},
+            "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
             "nav-link-selected": {"background-color": "#191848"},
         }
     )
-
 
 from record_room import show_record_room
 from today_games import show_today_games
@@ -49,3 +48,4 @@ elif choose == "소속 팀":
     show_team()
 elif choose == "마이페이지":
     show_my_page()
+
