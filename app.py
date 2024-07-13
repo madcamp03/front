@@ -4,7 +4,7 @@ from record_room import show_record_room
 from today_games import show_today_games
 from team_page import show_team
 from my_page import show_my_page
-import json
+
 
 # 페이지 설정
 st.set_page_config(
@@ -39,8 +39,6 @@ with st.sidebar:
         }
     )
 
-
-# 각 메뉴에 대한 페이지 내용
 if choose == "메인":
     st.write("메인 페이지 내용")
 elif choose == "기록실":

@@ -3,9 +3,8 @@ import pandas as pd
 
 def show_record_room():
     st.title("기록실")
-    st.write("여기에 기록실의 내용을 추가하세요.")
 
-    data = [
+    hitter_mock_data = [
         (1, 1, '도슨', 10, '키움증권고등학교', 2024, 80, 0.363, 0.56, 0.427, 0.987, 363, 325, 64, 118, 30, 2, 10, 48, 0, 1, 32, 47, 0.333, 2, 50),
         (2, 2, '에레디아', 5, 'SGG상업고등학교', 2024, 79, 0.36, 0.5, 0.397, 0.897, 343, 314, 43, 113, 15, 1, 9, 62, 0, 6, 15, 42, 0.417, 3, 50),
         (3, 3, '박건우', 6, 'NC특성화고등학교', 2024, 79, 0.354, 0.546, 0.415, 0.961, 325, 291, 52, 103, 21, 1, 11, 46, 0, 2, 30, 49, 0.372, 3, 100),
@@ -28,22 +27,78 @@ def show_record_room():
         (20, 20, '박성한', 5, 'SGG상업고등학교', 2024, 85, 0.301, 0.401, 0.38, 0.781, 366, 319, 53,	96,	17,	0, 5, 41, 3, 2, 41, 49, 0.292, 9, 81.8),
     ]
 
-    columns = [
+    hitter_columns = [
         "record_id", "player_id", "Name", "team_id", "Team", "Season", "Games", "AVG", "SLG", "OBP", "OPS", "PA", "AB", "R", "H", 
         "2B", "3B", "HR", "RBI", "SAC", "SF", "BB", "SO", "RISP", "SB", "SB%"
     ]
 
-    df = pd.DataFrame(data, columns=columns)
-    df = df.drop(['record_id', 'player_id', 'team_id'], axis=1)
-    df = df.sort_values(by='AVG', ascending=False)
+    hitter_df = pd.DataFrame(hitter_mock_data, columns=hitter_columns)
+    hitter_df = hitter_df.drop(['record_id', 'player_id', 'team_id'], axis=1)
+    hitter_df = hitter_df.sort_values(by='AVG', ascending=False)
     
-    df['SB%'] = df['SB%'].astype(str) + '%'
-    df['Season'] = df['Season'].astype(int)
-    
-    df['AVG'] = df['AVG'].round(3)
-    df['SLG'] = df['SLG'].round(3)
-    df['OBP'] = df['OBP'].round(3)
-    df['OPS'] = df['OPS'].round(3)
-    df['RISP'] = df['RISP'].round(3)
+    hitter_df.index = hitter_df.index + 1
 
-    st.dataframe(df)
+    hitter_df['SB%'] = hitter_df['SB%'].astype(str) + '%'
+    hitter_df['Season'] = hitter_df['Season'].astype('string')
+    
+    hitter_df['AVG'] = hitter_df['AVG'].round(3)
+    hitter_df['SLG'] = hitter_df['SLG'].round(3)
+    hitter_df['OBP'] = hitter_df['OBP'].round(3)
+    hitter_df['OPS'] = hitter_df['OPS'].round(3)
+    hitter_df['RISP'] = hitter_df['RISP'].round(3)
+
+    new_order = ["Name", "Team", "Season", "AVG", "Games", "SLG", "OBP", "OPS", "PA", "AB", "R", "H", 
+                 "2B", "3B", "HR", "RBI", "SAC", "SF", "BB", "SO", "RISP", "SB", "SB%"]
+    hitter_df = hitter_df[new_order]
+
+
+    pitcher_mock_data = [
+        (1, 1, '하트', 6, 'NC특성화고등학교', 2024, 2.74, 17, 7, 2, 0, 0, '105', 0.778, 92, 6, 24, 4, 111, 36, 32, 1.1),
+        (2, 2, '네일', 1, '기아고등학교', 2024, 2.86, 18, 8, 2, 0, 0, '107', 0.8, 105, 9, 22, 7, 107, 51, 34, 1.19),
+        (3, 3, '헤이수스', 10, '키움증권고등학교', 2024, 3.14, 18, 10, 5, 0, 0, '103 1/3', 0.667, 91, 10, 28, 8, 107, 42, 36, 1.15),
+        (4, 4, '원태인', 2, '삼성공업고등학교', 2024, 3.16, 16, 7, 4, 0, 0, '91', 0.636, 82, 8, 31, 4, 70, 35, 32, 1.24),
+        (5, 5, '후라도', 10, '키움증권고등학교', 2024, 3.36, 18, 8, 4, 0, 0, '112 1/3', 0.667, 116, 11, 21, 4, 97, 44, 42, 1.22),
+        (6, 6, '곽빈', 3, '두산고등학교', 2024, 3.59, 17, 7, 6, 0, 0, '97 2/3', 0.538, 83, 4, 38, 3, 92, 40, 39, 1.24),
+        (7, 7, '레예스', 2, '삼성공업고등학교', 2024, 3.64, 18, 8, 3, 0, 0, '99', 0.727, 112, 9, 21, 3, 79, 44, 40, 1.34),
+        (8, 8, '윌커슨', 8, '롯데고등학교', 2024, 3.64, 19, 8, 7, 0, 0, '118 2/3', 0.533, 127, 15, 12, 2, 102, 52, 48, 1.17),
+        (9, 9, '류현진', 9, '한화고등학교', 2024, 3.67, 17, 5, 5, 0, 0, '98', 0.5, 107, 5, 21, 1, 83, 48, 40, 1.31),
+        (10, 10, '양현종', 1, '기아고등학교', 2024, 3.81, 17, 6, 3, 0, 0, '101 2/3', 0.667, 102, 12, 22, 4, 72, 45, 43, 1.22),
+        (11, 11, '코너', 2, '삼성공업고등학교', 2024, 3.97, 19, 7, 5, 0, 0, '106 2/3', 0.583, 96, 17, 29, 15, 110, 52, 47, 1.17),
+        (12, 12, '카스타노', 6, 'NC특성화고등학교', 2024, 4.26, 17, 7, 5, 0, 0, '99 1/3', 0.583, 102, 10, 21, 7, 84, 58, 47, 1.24),
+        (13, 13, '엔스', 4, '엘지디지털고등학교', 2024, 4.3, 19, 8, 3, 0, 0, '104 2/3', 0.727, 107, 8, 32, 2, 104, 55, 50, 1.33),
+        (14, 14, '쿠에바스', 7, 'kt인터넷고등학교', 2024, 4.32, 18, 4, 8, 0, 0, '106 1/3', 0.333, 95, 12, 35, 3, 101, 53, 51, 1.22),
+        (15, 15, '김광현', 5, 'ssg상업고등학교', 2024, 4.66, 18, 6, 6, 0, 0, '96 2/3', 0.5, 90, 14, 37, 2, 93, 52, 50, 1.31),
+        (16, 16, '켈리', 4, '엘지디지털고등학교', 2024, 4.68, 18, 4, 8, 0, 0, '107 2/3', 0.333, 123, 13, 24, 5, 63, 63, 56, 1.37),
+        (17, 17, '신민혁', 6, 'NC특성화고등학교', 2024, 5.06, 18, 6, 7, 0, 0, '85 1/3', 0.462, 107, 16, 9, 4, 52, 52, 48, 1.36),
+        (18, 18, '엄상백', 7, 'kt인터넷고등학교', 2024, 5.18, 17, 7, 7, 0, 0, '88 2/3', 0.5, 95, 16, 25, 1, 100, 53, 51, 1.35),
+        (19, 19, '박세웅', 8, '롯데고등학교', 2024, 5.36, 17, 6, 6, 0, 0, '94', 0.5, 113, 6, 33, 5, 67, 63, 56, 1.55),
+    ]
+
+    pitcher_columns = [
+        "record_id", "player_id", "player_name", "team_id", "Team", "Season", "ERA", "Games", "win", "lose", "SV", "HLD", "IP", "WPCT", "H", "HR", 
+        "BB", "HBP", "SO", "run", "ER", "WHIP"
+    ]
+    
+    pitcher_df = pd.DataFrame(pitcher_mock_data, columns=pitcher_columns)
+    pitcher_df = pitcher_df.drop(['record_id', 'player_id', 'team_id'], axis=1)
+    pitcher_df = pitcher_df.sort_values(by='ERA', ascending=True)
+    
+    pitcher_df.index = pitcher_df.index + 1
+
+    pitcher_df['Season'] = pitcher_df['Season'].astype('string')
+    pitcher_df['ERA'] = pitcher_df['ERA'].round(2)
+    pitcher_df['WHIP'] = pitcher_df['WHIP'].round(2)
+    pitcher_df['WPCT'] = pitcher_df['WPCT'].round(3)
+
+
+
+    option = st.selectbox(
+        'Select player type',
+        ('타자', '투수')
+    )
+
+    # 상세 페이지 버튼 추가
+    if option == '타자':
+        st.dataframe(hitter_df)
+    else:
+        st.dataframe(pitcher_df)
