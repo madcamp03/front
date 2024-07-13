@@ -194,6 +194,7 @@ def show_team():
                             "OPS": [".830"]
                         }
                     stats_df = pd.DataFrame(stats_data)
+
                     st.table(stats_df)
 
 # Main logic for team_page.py
