@@ -1,9 +1,11 @@
+# app.py
 import streamlit as st
 from streamlit_option_menu import option_menu
 from record_room import show_record_room
 from today_games import show_today_games
 from team_page import show_team
 from my_page import show_my_page
+from manager_page import show_manager_page
 import json
 
 # 페이지 설정
@@ -29,7 +31,7 @@ st.sidebar.markdown(
 with st.sidebar:
     choose = option_menu(
         "Menu",
-        ["메인", "기록실", "오늘의 경기", "소속 팀", "마이페이지"],
+        ["메인", "기록실", "오늘의 경기", "소속 팀", "마이페이지", "관리페이지"],
         default_index=0,
         styles={
             "container": {"padding": "5!important", "background-color": "#ffffff"},
@@ -51,3 +53,5 @@ elif choose == "소속 팀":
     show_team()
 elif choose == "마이페이지":
     show_my_page()
+elif choose == "관리페이지":
+    show_manager_page()

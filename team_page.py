@@ -71,7 +71,6 @@ def show_team():
 
     # Timeline section
     st.markdown('<p class="title">팀 타임라인</p>', unsafe_allow_html=True)
-    st.markdown('<div class="timeline-container">', unsafe_allow_html=True)
 
     timeline_data = {
         "events": [
