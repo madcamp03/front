@@ -1,5 +1,9 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
+from record_room import show_record_room
+from today_games import show_today_games
+from team_page import show_team
+from my_page import show_my_page
 import json
 
 # 페이지 설정
@@ -35,29 +39,15 @@ with st.sidebar:
         }
     )
 
-<<<<<<< Updated upstream
-from record_room import show_record_room
-from today_games import show_today_games
-from team_page import show_team
-from my_page import show_my_page
-
-# 선택된 메뉴에 따라 페이지 호출
-if choose == "기록실":
-    show_record_room()
-=======
 
 # 각 메뉴에 대한 페이지 내용
 if choose == "메인":
     st.write("메인 페이지 내용")
-
-
 elif choose == "기록실":
-    st.write("기록실 페이지 내용")
->>>>>>> Stashed changes
+    show_record_room()
 elif choose == "오늘의 경기":
     show_today_games()
 elif choose == "소속 팀":
     show_team()
 elif choose == "마이페이지":
     show_my_page()
-
