@@ -217,14 +217,32 @@ lineup_mock_data = {
     }
 }
 
+result_mock_data = {
+    4: {
+        "팀 기록": {
+            "SSG": {"안타": 5, "홈런": 0, "도루": 0, "삼진": 7, "병살": 0, "실책": 2},
+            "두산": {"안타": 10, "홈런": 1, "도루": 0, "삼진": 7, "병살": 1, "실책": 0}
+        },
+        "경기 기록": {
+            "결승타": "허경민(1회 무사 1루서 좌월 홈런)",
+            "홈런": "허경민 5호(1회 2점 김광현)",
+            "2루타": "김재환(4회), 양석환(4회), 양의지(5회), 전다민(8회)",
+            "실책": "박성한(5회), 한유섬(8회)",
+            "주루사": "추신수(6회)",
+            "병살타": "양석환(5회)",
+            "포일": "김민식(7회)"
+        }
+    }
+}
+
 game_info_columns = [
     "game_id", "날짜 및 시간", "장소", "team_away_id", "team_home_id", "memo"
 ]
 game_info_mock_data = [
     (1, "2024-06-26 13:00", "기아고등학교", 3, 1, "-"),
     (2, "2024-06-27 18:00", "기아고등학교", 3, 1, "기아고등학교 2차전"),
-    (3, "2024-07-15 13:00", "두산고등학교", 2, 3, "-"),
-    (4, "2024-07-15 18:00", "두산고등학교", 5, 3, "-"),
+    (3, "2024-07-14 13:00", "두산고등학교", 2, 3, "-"),
+    (4, "2024-07-15 1:00", "두산고등학교", 5, 3, "-"),
     (5, "2024-07-19 13:00", "목동야구장", 3, 10, "-"),
     (6, "2024-07-20 14:00", "목동야구장", 3, 10, "키움증권고등학교 2차전"),
     (7, "2024-07-25 15:00", "롯데고등학교", 3, 8, "-"),
@@ -233,6 +251,24 @@ game_info_mock_data = [
 
 def map_team(id):
     return team_list[id]
+
+
+def show_game_results(game_id):
+    result = result_mock_data.get(game_id, {})
+    if not result:
+        st.write("경기 결과가 없습니다.")
+        return
+
+    team_record = result.get("팀 기록", {})
+    game_record = result.get("경기 기록", {})
+
+    st.subheader("팀 기록")
+    team_df = pd.DataFrame.from_dict(team_record, orient='index').reset_index().rename(columns={'index': '구분'})
+    st.dataframe(team_df)
+
+    st.subheader("경기 기록")
+    for key, value in game_record.items():
+        st.write(f"**{key}**: {value}")
 
 
 def show_today_games():
@@ -317,8 +353,9 @@ def show_today_games():
                 with tabs[1]:
                     if now < game_time:
                         st.write("경기 시작 전입니다")
-                    elif now > game_time + timedelta(hours=4):
-                        st.write(result_mock_data[game['game_id']])
+                    # elif now > game_time + timedelta(hours=4):
+                    elif now > game_time + timedelta(minutes=4): # test code
+                        show_game_results(game['game_id'])
                     else:
                         st.write("경기 진행 중입니다")
     else:
