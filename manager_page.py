@@ -52,9 +52,8 @@ def generate_lineup(players_data):
             {"role": "user", "content": pre_prompt + prompt}
         ]
     )
-    # answer = response.choices[0].message["content"]
-    st.write(response)
-    # return response
+    result = response.choices[0].message.content
+    return json.loads(result)
 
 
 def show_manager_page():
@@ -105,16 +104,21 @@ def show_manager_page():
     }
     lineup_df = pd.DataFrame(players_data)
 
+    # 초기화
+    if 'recommend_lineup_data' not in st.session_state:
+        st.session_state['recommend_lineup_data'] = pd.DataFrame()
+
+    if 'final_lineup_data' not in st.session_state:
+        st.session_state['final_lineup_data'] = pd.DataFrame()
+
     with col2:
         st.header("추천 라인업 테이블")
         if st.button("라인업 생성"):
             final_lineup = generate_lineup(players_data)
             if final_lineup:
-                st.write("Generated Lineup Data:", final_lineup)  # 콘솔에 출력
-                st.session_state['final_lineup_data'] = pd.DataFrame(
+                st.session_state['recommend_lineup_data'] = pd.DataFrame(
                     final_lineup)
-        if not st.session_state['final_lineup_data'].empty:
-            st.table(st.session_state['final_lineup_data'])
+                st.table(st.session_state['recommend_lineup_data'])
         else:
             st.table(lineup_df)
 
