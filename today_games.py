@@ -1,8 +1,9 @@
+from PIL import Image
 import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 
-    
+
 team = "두산고등학교"
 
 team_list = {
@@ -249,6 +250,7 @@ game_info_mock_data = [
     (8, "2024-07-29 15:00", "두산고등학교", 4, 3, "-"),
 ]
 
+
 def map_team(id):
     return team_list[id]
 
@@ -263,7 +265,8 @@ def show_game_results(game_id):
     game_record = result.get("경기 기록", {})
 
     st.subheader("팀 기록")
-    team_df = pd.DataFrame.from_dict(team_record, orient='index').reset_index().rename(columns={'index': '구분'})
+    team_df = pd.DataFrame.from_dict(
+        team_record, orient='index').reset_index().rename(columns={'index': '구분'})
     st.dataframe(team_df)
 
     st.subheader("경기 기록")
@@ -274,7 +277,8 @@ def show_game_results(game_id):
 def show_today_games():
     st.title("오늘의 경기")
 
-    today_games_initial_df = pd.DataFrame(game_info_mock_data, columns=game_info_columns)
+    today_games_initial_df = pd.DataFrame(
+        game_info_mock_data, columns=game_info_columns)
 
     now = pd.Timestamp.now()
 
@@ -284,19 +288,20 @@ def show_today_games():
 
     today_games_df['날짜 및 시간'] = pd.to_datetime(today_games_df['날짜 및 시간'])
     today_games_df = today_games_df[
-        (today_games_df['날짜 및 시간'] >= now) & 
+        (today_games_df['날짜 및 시간'] >= now) &
         (today_games_df['날짜 및 시간'].dt.month == now.month)
     ]
 
-
-    today_games_df['team_away_id'] = today_games_df['team_away_id'].map(map_team)
-    today_games_df['team_home_id'] = today_games_df['team_home_id'].map(map_team)
+    today_games_df['team_away_id'] = today_games_df['team_away_id'].map(
+        map_team)
+    today_games_df['team_home_id'] = today_games_df['team_home_id'].map(
+        map_team)
 
     today_games_df.rename(columns={'team_away_id': '원정 팀'}, inplace=True)
     today_games_df.rename(columns={'team_home_id': '홈 팀'}, inplace=True)
-    
-    st.subheader(team+ " 경기 일정")
-    
+
+    st.subheader(team + " 경기 일정")
+
     column_config = {
         "날짜 및 시간": st.column_config.Column(width=150),
         "장소": st.column_config.Column(width=150),
@@ -305,7 +310,8 @@ def show_today_games():
         "memo": st.column_config.Column(width=400)  # memo 열의 너비를 300으로 설정
     }
 
-    st.dataframe(today_games_df, hide_index=True, column_config=column_config, use_container_width=True)
+    st.dataframe(today_games_df, hide_index=True,
+    column_config=column_config, use_container_width=True)
 
     st.markdown(
         """
@@ -321,14 +327,14 @@ def show_today_games():
     # 오늘의 경기 표시
 
     today = datetime.today().strftime('%Y-%m-%d')
-    today_games = today_games_initial_df[today_games_initial_df['날짜 및 시간'].str.startswith(today)]
-    
+    today_games = today_games_initial_df[today_games_initial_df['날짜 및 시간'].str.startswith(
+        today)]
 
     if not today_games.empty:
 
         st.subheader(f"오늘의 경기")
         for _, game in today_games.iterrows():
-            
+
             game_time = datetime.strptime(game['날짜 및 시간'], '%Y-%m-%d %H:%M')
             with st.expander(f"vs {team_list[game['team_away_id']]}"):
 
@@ -339,24 +345,59 @@ def show_today_games():
                         st.write(f"{team_list[game['team_home_id']]} 라인업")
                         for key, player in lineup_mock_data[game['game_id']][team_list[game['team_home_id']]].items():
                             if isinstance(player, dict):
-                                st.write(f"{key}: {player['name']} ({player['position']})")
+                                st.write(
+                                    f"{key}: {player['name']} ({player['position']})")
                             else:
                                 st.write(f"{key}: {player}")
                     with col2:
                         st.write(f"{team_list[game['team_away_id']]} 라인업")
                         for key, player in lineup_mock_data[game['game_id']][team_list[game['team_away_id']]].items():
                             if isinstance(player, dict):
-                                st.write(f"{key}: {player['name']} ({player['position']})")
+                                st.write(
+                                    f"{key}: {player['name']} ({player['position']})")
                             else:
                                 st.write(f"{key}: {player}")
-                
+
                 with tabs[1]:
                     if now < game_time:
                         st.write("경기 시작 전입니다")
                     # elif now > game_time + timedelta(hours=4):
-                    elif now > game_time + timedelta(minutes=4): # test code
+                    elif now > game_time + timedelta(minutes=4):  # test code
                         show_game_results(game['game_id'])
                     else:
                         st.write("경기 진행 중입니다")
     else:
         st.write("오늘 경기가 없습니다.")
+    # Load image
+    image_path = "assets/bears.jpg"
+
+    # Data for the games
+    games = {
+        "Date": ["7.26. (금)", "7.26. (금)", "7.26. (금)", "7.26. (금)", "7.27. (토)", "7.27. (토)", "7.27. (토)", "7.27. (토)"],
+        "Time": ["오후 6:30", "오후 6:30", "오후 6:30", "오후 6:30", "오후 6:00", "오후 6:00", "오후 6:00", "오후 6:00"],
+        "Team 1": ["KIA", "롯데", "두산", "KT", "KT", "롯데", "한화", "KIA"],
+        "Team 2": ["키움", "NC", "SSG", "삼성", "KIA", "NC", "LG", "키움"]
+    }
+
+    # Create a DataFrame
+    df = pd.DataFrame(games)
+
+    # Layout the games in a table-like format
+    for date in df["Date"].unique():
+        st.markdown(f"### {date}")
+
+        day_games = df[df["Date"] == date]
+
+        for idx, game in day_games.iterrows():
+            col1, col2, col3 = st.columns([1, 1, 1])
+
+            with col1:
+                st.image(image_path, width=50)
+                st.markdown(f"**{game['Team 1']}**")
+
+            with col2:
+                st.markdown(f"{game['Time']}")
+
+            with col3:
+                st.image(image_path, width=50)
+                st.markdown(f"**{game['Team 2']}**")

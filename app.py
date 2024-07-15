@@ -60,7 +60,7 @@ if choose == "메인":
             }
             .line-drawing-demo {
                 width: 600px;
-                height: 200px;
+                height: 600px;
                 margin: 20px;
             }
             .line-drawing-demo .lines path {
@@ -72,7 +72,7 @@ if choose == "메인":
     </head>
     <body>
         <div class="line-drawing-demo">
-            <svg viewBox="0 0 600 200" class="lines">
+            <svg viewBox="0 0 600 600" class="lines">
                 <!-- B -->
                 <path d="M10 20 L10 180 Q30 200 50 180 Q30 160 50 140 Q30 120 50 100 Q30 80 50 60 Q30 40 10 20 Z"></path>
                 <!-- A -->
@@ -85,6 +85,20 @@ if choose == "메인":
                 <path d="M310 180 L350 20 L390 180 M325 100 L375 100"></path>
                 <!-- T (Baseball Bat) -->
                 <path d="M410 180 L430 20 L490 20 L420 180 Z"></path> <!-- Bat shape -->
+
+                <!-- Baseball field outline -->
+                <path d="M300,20 L580,300 A260,260 0 0,1 20,300 Z"></path>
+                <path d="M300,20 L300,300"></path>
+                <path d="M20,300 L580,300"></path>
+                <path d="M20,300 L300,580 L580,300"></path>
+                <path d="M300,580 L300,300"></path>
+                
+                <!-- Bases -->
+                <circle cx="300" cy="300" r="10"></circle> <!-- Pitcher's mound -->
+                <rect x="290" y="10" width="20" height="20" transform="rotate(45 300 20)"></rect> <!-- Home plate -->
+                <rect x="490" y="290" width="20" height="20" transform="rotate(45 500 300)"></rect> <!-- First base -->
+                <rect x="290" y="490" width="20" height="20" transform="rotate(45 300 500)"></rect> <!-- Second base -->
+                <rect x="90" y="290" width="20" height="20" transform="rotate(45 100 300)"></rect> <!-- Third base -->
             </svg>
         </div>
 
