@@ -14,18 +14,29 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+def reset_session_state():
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]
+    
+    st.session_state['user_data'] = {
+        'admin': {'password': 'password', 'role': 'manager', 'team': '두산고등학교'},
+        'doosan': {'password': 'password', 'role': 'player', 'team': '두산고등학교'}
+    }
+
 
 if 'user_data' not in st.session_state:
     st.session_state['user_data'] = {
-        'admin': {'password': 'password', 'role': '관리자', 'team': '두산고등학교'},
-        'doosan': {'password': 'password', 'role': '관리자', 'team': '두산고등학교'}
+        'admin': {'password': 'password', 'role': 'manager', 'team': '두산고등학교'},
+        'doosan': {'password': 'password', 'role': 'player', 'team': '두산고등학교'}
     }
     print(st.session_state['user_data'])
+
 teams = ["삼성공업고등학교", "SSG상업고등학교", "키움증권고등학교", "두산고등학교"] 
 
 # 로그인 함수
 def login(username, password):
     if username in st.session_state['user_data'] and st.session_state['user_data'][username]['password'] == password:
+        reset_session_state()
         st.session_state['username'] = username
         st.session_state['role'] = st.session_state['user_data'][username]['role']
         st.session_state['team'] = st.session_state['user_data'][username]['team']
