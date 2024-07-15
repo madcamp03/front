@@ -14,7 +14,80 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# 사이드바 로고 설정
+
+if 'user_data' not in st.session_state:
+    st.session_state['user_data'] = {
+        'admin': {'password': 'password', 'role': '관리자', 'team': '두산고등학교'},
+        'doosan': {'password': 'password', 'role': '관리자', 'team': '두산고등학교'}
+    }
+    print(st.session_state['user_data'])
+teams = ["삼성공업고등학교", "SSG상업고등학교", "키움증권고등학교", "두산고등학교"] 
+
+# 로그인 함수
+def login(username, password):
+    if username in st.session_state['user_data'] and st.session_state['user_data'][username]['password'] == password:
+        st.session_state['username'] = username
+        st.session_state['role'] = st.session_state['user_data'][username]['role']
+        st.session_state['team'] = st.session_state['user_data'][username]['team']
+        st.session_state['logged_in'] = True
+        return True
+    return False
+
+# 회원가입 함수
+def signup(username, password, role, team):
+    if username not in st.session_state['user_data']:
+        st.session_state['user_data'][username] = {'password': password, 'role': role, 'team': team}
+        print(st.session_state['user_data'])
+        return True
+    return False
+
+# 로그인 페이지
+def login_page():
+    st.title("로그인")
+
+    username = st.text_input("아이디")
+    password = st.text_input("비밀번호", type='password')
+
+    if st.button("로그인"):
+        if login(username, password):
+            st.success("로그인 성공!")
+            st.experimental_rerun()
+        else:
+            st.error("아이디 또는 비밀번호가 잘못되었습니다.")
+
+    if st.button("회원가입"):
+        st.session_state['signup'] = True
+
+# 회원가입 페이지
+def signup_page():
+    st.title("회원가입")
+
+    username = st.text_input("아이디")
+    password = st.text_input("비밀번호", type='password')
+    role = st.selectbox("역할 선택", ["guest", "선수", "관리자"])
+
+    if role == "선수" or role == "관리자":
+        if role == "관리자":
+            team = st.selectbox("소속 단체 선택", teams + ["새로운 단체 만들기"])
+            if team == "새로운 단체 만들기":
+                team = st.text_input("새로운 단체 이름")
+        else:
+            team = st.selectbox("소속 단체 선택", teams)
+    else:
+        team = ""
+
+    if st.button("가입"):
+        if signup(username, password, role, team):
+            st.success("회원가입 성공! 로그인 해주세요.")
+            st.session_state['signup'] = False
+        else:
+            st.error("이미 존재하는 아이디입니다.")
+
+    if st.button("로그인 화면으로 돌아가기"):
+        st.session_state['signup'] = False
+
+
+
 st.sidebar.markdown(
     """
     <div style="text-align: center;">
@@ -26,94 +99,106 @@ st.sidebar.markdown(
     unsafe_allow_html=True
 )
 
-with st.sidebar:
-    choose = option_menu(
-        "Menu",
-        ["메인", "기록실", "오늘의 경기", "소속 팀", "마이페이지", "관리페이지"],
-        default_index=0,
-        styles={
-            "container": {"padding": "5!important", "background-color": "#ffffff"},
-            "icon": {"color": "white", "font-size": "25px"},
-            "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
-            "nav-link-selected": {"background-color": "#191848"},
-        }
-    )
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
 
-# 각 메뉴에 대한 페이지 내용
-if choose == "메인":
-    st.write("메인 페이지 내용")
-    html_code = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Anime.js Animations</title>
-        <style>
-            body {
-                background-color: #00205b;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-            }
-            .line-drawing-demo {
-                width: 600px;
-                height: 200px;
-                margin: 20px;
-            }
-            .line-drawing-demo .lines path {
-                fill: transparent;
-                stroke: white;
-                stroke-width: 2;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="line-drawing-demo">
-            <svg viewBox="0 0 600 200" class="lines">
-                <!-- B -->
-                <path d="M10 20 L10 180 Q30 200 50 180 Q30 160 50 140 Q30 120 50 100 Q30 80 50 60 Q30 40 10 20 Z"></path>
-                <!-- A -->
-                <path d="M70 180 L110 20 L150 180 M85 100 L135 100"></path>
-                <!-- T -->
-                <path d="M170 20 L230 20 M200 20 L200 180"></path>
-                <!-- B -->
-                <path d="M250 20 L250 180 Q270 200 290 180 Q270 160 290 140 Q270 120 290 100 Q270 80 290 60 Q270 40 250 20 Z"></path>
-                <!-- A -->
-                <path d="M310 180 L350 20 L390 180 M325 100 L375 100"></path>
-                <!-- T (Baseball Bat) -->
-                <path d="M410 180 L430 20 L490 20 L420 180 Z"></path> <!-- Bat shape -->
-            </svg>
-        </div>
+if 'signup' not in st.session_state:
+    st.session_state['signup'] = False
 
-        <!-- Anime.js Library -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-        <script>
-            anime({
-                targets: '.line-drawing-demo .lines path',
-                strokeDashoffset: [anime.setDashoffset, 0],
-                easing: 'easeInOutSine',
-                duration: 1500,
-                delay: function(el, i) { return i * 250 },
-                direction: 'alternate',
-                loop: true
-            });
-        </script>
-    </body>
-    </html>
-    """
+if not st.session_state['logged_in']:
+    if st.session_state['signup']:
+        signup_page()
+    else:
+        login_page()
+else:
+    with st.sidebar:
+        choose = option_menu(
+            "Menu",
+            ["메인", "기록실", "오늘의 경기", "소속 팀", "마이페이지", "관리페이지"],
+            default_index=0,
+            styles={
+                "container": {"padding": "5!important", "background-color": "#ffffff"},
+                "icon": {"color": "white", "font-size": "25px"},
+                "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
+                "nav-link-selected": {"background-color": "#191848"},
+            }
+        )
 
-    # Streamlit에서 HTML과 JavaScript 코드 실행
-    st.components.v1.html(html_code, height=600, scrolling=False)
-elif choose == "기록실":
-    show_record_room()
-elif choose == "오늘의 경기":
-    show_today_games()
-elif choose == "소속 팀":
-    show_team()
-elif choose == "마이페이지":
-    show_my_page()
-elif choose == "관리페이지":
-    show_manager_page()
+    # 각 메뉴에 대한 페이지 내용
+    if choose == "메인":
+        st.write("메인 페이지 내용")
+        html_code = """
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Anime.js Animations</title>
+            <style>
+                body {
+                    background-color: #00205b;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                }
+                .line-drawing-demo {
+                    width: 600px;
+                    height: 200px;
+                    margin: 20px;
+                }
+                .line-drawing-demo .lines path {
+                    fill: transparent;
+                    stroke: white;
+                    stroke-width: 2;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="line-drawing-demo">
+                <svg viewBox="0 0 600 200" class="lines">
+                    <!-- B -->
+                    <path d="M10 20 L10 180 Q30 200 50 180 Q30 160 50 140 Q30 120 50 100 Q30 80 50 60 Q30 40 10 20 Z"></path>
+                    <!-- A -->
+                    <path d="M70 180 L110 20 L150 180 M85 100 L135 100"></path>
+                    <!-- T -->
+                    <path d="M170 20 L230 20 M200 20 L200 180"></path>
+                    <!-- B -->
+                    <path d="M250 20 L250 180 Q270 200 290 180 Q270 160 290 140 Q270 120 290 100 Q270 80 290 60 Q270 40 250 20 Z"></path>
+                    <!-- A -->
+                    <path d="M310 180 L350 20 L390 180 M325 100 L375 100"></path>
+                    <!-- T (Baseball Bat) -->
+                    <path d="M410 180 L430 20 L490 20 L420 180 Z"></path> <!-- Bat shape -->
+                </svg>
+            </div>
+
+            <!-- Anime.js Library -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+            <script>
+                anime({
+                    targets: '.line-drawing-demo .lines path',
+                    strokeDashoffset: [anime.setDashoffset, 0],
+                    easing: 'easeInOutSine',
+                    duration: 1500,
+                    delay: function(el, i) { return i * 250 },
+                    direction: 'alternate',
+                    loop: true
+                });
+            </script>
+        </body>
+        </html>
+        """
+
+        # Streamlit에서 HTML과 JavaScript 코드 실행
+        st.components.v1.html(html_code, height=600, scrolling=False)
+    elif choose == "기록실":
+        show_record_room()
+    elif choose == "오늘의 경기":
+        show_today_games()
+    elif choose == "소속 팀":
+        show_team()
+    elif choose == "마이페이지":
+        show_my_page()
+    elif choose == "관리페이지":
+        show_manager_page()
