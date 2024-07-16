@@ -56,6 +56,14 @@ def generate_lineup(players_data):
     return json.loads(result)
 
 
+def validate_and_send():
+    df = st.session_state['final_lineup_data']
+    if df.isnull().values.any() or (df == '').values.any():
+        st.toast("모든 칸을 채워주세요!", icon="⚠️")
+    else:
+        st.toast("모든 칸이 채워졌습니다.\n 데이터를 서버로 전송합니다.", icon="✅")
+
+
 def show_manager_page():
     initialize_session_state()
     st.title("관리자 페이지")
@@ -123,8 +131,18 @@ def show_manager_page():
             st.table(lineup_df)
 
     # 최종 라인업 데이터
-    final_lineup_df = st.session_state['final_lineup_data']
+    if 'final_lineup_data' not in st.session_state:
+        st.session_state['final_lineup_data'] = pd.DataFrame({
+            'Player': ['', '', ''],
+            'Position': ['', '', ''],
+            'Number': ['', '', '']
+        })
 
     with col3:
         st.header("최종 라인업")
-        st.table(final_lineup_df)
+        edited_df = st.data_editor(
+            st.session_state['final_lineup_data'])
+        st.session_state['final_lineup_data'] = edited_df
+
+        if st.button("저장"):
+            validate_and_send()
