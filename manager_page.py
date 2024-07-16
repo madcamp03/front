@@ -6,6 +6,7 @@ from openai import OpenAI
 import streamlit as st
 from dotenv import load_dotenv
 import requests
+from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
 
 # Load environment variables from .env file
 load_dotenv()
@@ -178,26 +179,6 @@ def show_manager_page():
         st.session_state['final_lineup_data'] = pd.DataFrame()
 
     with col2:
-        st.header("추천 라인업 테이블")
-        if st.button("라인업 생성"):
-            final_lineup = generate_lineup(players_data)
-            final_lineup_df = pd.DataFrame(final_lineup)
-            final_lineup_df.index = final_lineup_df.index + 1
-            if not final_lineup_df.empty:
-                st.session_state['recommend_lineup_data'] = final_lineup_df
-                st.table(st.session_state['recommend_lineup_data'])
-        else:
-            st.table(lineup_df)
-
-    # 최종 라인업 데이터
-    if 'final_lineup_data' not in st.session_state:
-        st.session_state['final_lineup_data'] = pd.DataFrame({
-            'Player': ['', '', ''],
-            'Position': ['', '', ''],
-            'Number': ['', '', '']
-        })
-
-    with col3:
         st.header("최종 라인업")
         edited_df = st.data_editor(
             st.session_state['final_lineup_data'])
@@ -205,3 +186,45 @@ def show_manager_page():
 
         if st.button("저장"):
             validate_and_send()
+
+        # 최종 라인업 데이터
+        if 'final_lineup_data' not in st.session_state:
+            st.session_state['final_lineup_data'] = pd.DataFrame({
+                'Player': ['', '', ''],
+                'Position': ['', '', ''],
+                'Number': ['', '', '']
+            })
+
+    with col3:
+        st.header("추천 라인업 테이블")
+        if st.button("라인업 생성"):
+            final_lineup = generate_lineup(players_data)
+            final_lineup_df = pd.DataFrame(final_lineup)
+            final_lineup_df.index = final_lineup_df.index + 1
+            if not final_lineup_df.empty:
+                st.session_state['recommend_lineup_data'] = final_lineup_df
+
+        # AgGrid 설정
+        if not st.session_state['recommend_lineup_data'].empty:
+            gb = GridOptionsBuilder.from_dataframe(
+                st.session_state['recommend_lineup_data'])
+            gb.configure_default_column(editable=True)
+            grid_options = gb.build()
+
+            grid_response = AgGrid(
+                st.session_state['recommend_lineup_data'],
+                gridOptions=grid_options,
+                update_mode=GridUpdateMode.VALUE_CHANGED,
+                fit_columns_on_grid_load=True
+            )
+
+            # 업데이트된 데이터를 세션 상태에 저장
+            st.session_state['recommend_lineup_data'] = grid_response['data']
+
+        else:
+            st.table(lineup_df)
+
+        # 라인업 저장 버튼
+        if st.button("라인업 저장"):
+            st.session_state['final_lineup_data'] = st.session_state['recommend_lineup_data']
+            st.success("라인업이 저장되었습니다.")
