@@ -1,3 +1,4 @@
+import requests
 import streamlit as st
 from streamlit_option_menu import option_menu
 from record_room import show_record_room
@@ -18,31 +19,26 @@ def reset_session_state():
     for key in list(st.session_state.keys()):
         del st.session_state[key]
     
-    st.session_state['user_data'] = {
-        'admin': {'password': 'password', 'role': 'manager', 'team': '두산고등학교'},
-        'doosan': {'password': 'password', 'role': 'player', 'team': '두산고등학교'}
-    }
-
+    st.session_state['user_data'] = {}
 
 if 'user_data' not in st.session_state:
-    st.session_state['user_data'] = {
-        'admin': {'password': 'password', 'role': 'manager', 'team': '두산고등학교'},
-        'doosan': {'password': 'password', 'role': 'player', 'team': '두산고등학교'}
-    }
-    print(st.session_state['user_data'])
+    st.session_state['user_data'] = {}
 
 teams = ["삼성공업고등학교", "SSG상업고등학교", "키움증권고등학교", "두산고등학교"] 
 
 # 로그인 함수
 def login(username, password):
-    if username in st.session_state['user_data'] and st.session_state['user_data'][username]['password'] == password:
+    response = requests.post("http://34.136.30.83:3000/api/login", json={"username": username, "password": password})
+    if response.status_code == 200:
+        user_data = response.json()
         reset_session_state()
-        st.session_state['username'] = username
-        st.session_state['role'] = st.session_state['user_data'][username]['role']
-        st.session_state['team'] = st.session_state['user_data'][username]['team']
+        st.session_state['username'] = user_data['user_name']
+        st.session_state['role'] = user_data['user_role']
+        st.session_state['team'] = user_data['team_id']
         st.session_state['logged_in'] = True
         return True
-    return False
+    else:
+        return False
 
 # 회원가입 함수
 def signup(username, password, role, team):
