@@ -7,6 +7,7 @@ from team_page import show_team
 from my_page import show_my_page
 from manager_page import show_manager_page
 
+
 # 페이지 설정
 st.set_page_config(
     page_title="My Sports App",
@@ -15,20 +16,25 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+
 def reset_session_state():
     for key in list(st.session_state.keys()):
         del st.session_state[key]
-    
+
     st.session_state['user_data'] = {}
+
 
 if 'user_data' not in st.session_state:
     st.session_state['user_data'] = {}
 
-teams = ["삼성공업고등학교", "SSG상업고등학교", "키움증권고등학교", "두산고등학교"] 
+teams = ["삼성공업고등학교", "SSG상업고등학교", "키움증권고등학교", "두산고등학교"]
 
 # 로그인 함수
+
+
 def login(username, password):
-    response = requests.post("http://34.136.30.83:3000/api/login", json={"username": username, "password": password})
+    response = requests.post("http://localhost:3000/api/login",
+                             json={"username": username, "password": password})
     if response.status_code == 200:
         user_data = response.json()
         reset_session_state()
@@ -41,31 +47,38 @@ def login(username, password):
         return False
 
 # 회원가입 함수
+
+
 def signup(username, password, role, team):
     if username not in st.session_state['user_data']:
-        st.session_state['user_data'][username] = {'password': password, 'role': role, 'team': team}
+        st.session_state['user_data'][username] = {
+            'password': password, 'role': role, 'team': team}
         print(st.session_state['user_data'])
         return True
     return False
 
 # 로그인 페이지
-def login_page():
-    st.title("로그인")
 
-    username = st.text_input("아이디")
-    password = st.text_input("비밀번호", type='password')
 
-    if st.button("로그인"):
-        if login(username, password):
-            st.success("로그인 성공!")
-            st.experimental_rerun()
-        else:
-            st.error("아이디 또는 비밀번호가 잘못되었습니다.")
+# def login_page():
+#     st.title("로그인")
 
-    if st.button("회원가입"):
-        st.session_state['signup'] = True
+#     username = st.text_input("아이디")
+#     password = st.text_input("비밀번호", type='password')
+
+#     if st.button("로그인"):
+#         if login(username, password):
+#             st.success("로그인 성공!")
+#             st.experimental_rerun()
+#         else:
+#             st.error("아이디 또는 비밀번호가 잘못되었습니다.")
+
+#     if st.button("회원가입"):
+#         st.session_state['signup'] = True
 
 # 회원가입 페이지
+
+
 def signup_page():
     st.title("회원가입")
 
@@ -94,7 +107,6 @@ def signup_page():
         st.session_state['signup'] = False
 
 
-
 st.sidebar.markdown(
     """
     <div style="text-align: center;">
@@ -112,11 +124,11 @@ if 'logged_in' not in st.session_state:
 if 'signup' not in st.session_state:
     st.session_state['signup'] = False
 
-if not st.session_state['logged_in']:
-    if st.session_state['signup']:
-        signup_page()
-    else:
-        login_page()
+# if not st.session_state['logged_in']:
+#     if st.session_state['signup']:
+#         signup_page()
+#     else:
+#         login_page()
 else:
     with st.sidebar:
         choose = option_menu(
@@ -133,7 +145,6 @@ else:
 
     # 각 메뉴에 대한 페이지 내용
     if choose == "메인":
-        st.write("메인 페이지 내용")
         html_code = """
         <!DOCTYPE html>
         <html lang="en">
@@ -177,6 +188,20 @@ else:
                     <path d="M310 180 L350 20 L390 180 M325 100 L375 100"></path>
                     <!-- T (Baseball Bat) -->
                     <path d="M410 180 L430 20 L490 20 L420 180 Z"></path> <!-- Bat shape -->
+
+                    <!-- Baseball field outline -->
+                    <path d="M300,20 L580,300 A260,260 0 0,1 20,300 Z"></path>
+                    <path d="M300,20 L300,300"></path>
+                    <path d="M20,300 L580,300"></path>
+                    <path d="M20,300 L300,580 L580,300"></path>
+                    <path d="M300,580 L300,300"></path>
+                    
+                    <!-- Bases -->
+                    <circle cx="300" cy="300" r="10"></circle> <!-- Pitcher's mound -->
+                    <rect x="290" y="10" width="20" height="20" transform="rotate(45 300 20)"></rect> <!-- Home plate -->
+                    <rect x="490" y="290" width="20" height="20" transform="rotate(45 500 300)"></rect> <!-- First base -->
+                    <rect x="290" y="490" width="20" height="20" transform="rotate(45 300 500)"></rect> <!-- Second base -->
+                    <rect x="90" y="290" width="20" height="20" transform="rotate(45 100 300)"></rect> <!-- Third base -->
                 </svg>
             </div>
 
