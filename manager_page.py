@@ -173,6 +173,9 @@ def show_manager_page():
     if 'lineup_saved' not in st.session_state:
         st.session_state['lineup_saved'] = False
 
+    if 'selected_match' not in st.session_state:
+        st.session_state['selected_match'] = None
+
     with col2:
         st.header("경기 등록")
 
