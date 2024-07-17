@@ -32,19 +32,21 @@ teams = ["삼성공업고등학교", "SSG상업고등학교", "키움증권고�
 # 로그인 함수
 
 
-def login(username, password):
-    response = requests.post("http://localhost:3000/api/login",
-                             json={"username": username, "password": password})
-    if response.status_code == 200:
-        user_data = response.json()
-        reset_session_state()
-        st.session_state['username'] = user_data['user_name']
-        st.session_state['role'] = user_data['user_role']
-        st.session_state['team'] = user_data['team_id']
-        st.session_state['logged_in'] = True
-        return True
-    else:
-        return False
+# def login(username, password):
+#     headers = {
+#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
+#     response = requests.post("http://localhost:3000/api/login", headers,
+#                              json={"username": username, "password": password})
+#     if response.status_code == 200:
+#         user_data = response.json()
+#         reset_session_state()
+#         st.session_state['username'] = user_data['user_name']
+#         st.session_state['role'] = user_data['user_role']
+#         st.session_state['team'] = user_data['team_id']
+#         st.session_state['logged_in'] = True
+#         return True
+#     else:
+#         return False
 
 # 회원가입 함수
 
