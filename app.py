@@ -15,16 +15,20 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+
 def reset_session_state():
     for key in list(st.session_state.keys()):
         del st.session_state[key]
-    
+
     st.session_state['user_data'] = {}
+
 
 if 'user_data' not in st.session_state:
     st.session_state['user_data'] = {}
 
+    
 teams = ["삼성공업고등학교", "SSG상업고등학교", "키움증권고등학교", "두산고등학교"] 
+
 
 # 로그인 함수
 def login(username, password):
@@ -40,15 +44,18 @@ def login(username, password):
         st.session_state['logged_in'] = True
         return True
     else:
-        return False
+        return 
 
+      
 # 회원가입 함수
 def signup(username, password, role, team):
     if username not in st.session_state['user_data']:
-        st.session_state['user_data'][username] = {'password': password, 'role': role, 'team': team}
+        st.session_state['user_data'][username] = {
+            'password': password, 'role': role, 'team': team}
         print(st.session_state['user_data'])
         return True
     return False
+
 
 # 로그인 페이지
 def login_page():
@@ -66,7 +73,8 @@ def login_page():
 
     if st.button("회원가입"):
         st.session_state['signup'] = True
-
+  
+  
 # 회원가입 페이지
 def signup_page():
     st.title("회원가입")
@@ -96,7 +104,6 @@ def signup_page():
         st.session_state['signup'] = False
 
 
-
 st.sidebar.markdown(
     """
     <div style="text-align: center;">
@@ -119,6 +126,7 @@ if not st.session_state['logged_in']:
         signup_page()
     else:
         login_page()
+        
 else:
     with st.sidebar:
         if st.session_state['role'] == 'manager':
@@ -149,7 +157,6 @@ else:
 
     # 각 메뉴에 대한 페이지 내용
     if choose == "메인":
-        st.write("메인 페이지 내용")
         html_code = """
         <!DOCTYPE html>
         <html lang="en">
@@ -179,20 +186,34 @@ else:
             </style>
         </head>
         <body>
-            <div class="line-drawing-demo">
-                <svg viewBox="0 0 600 200" class="lines">
+            <div class="line-drawing-demo" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+                <svg viewBox="0 0 1000 600" class="lines">
                     <!-- B -->
-                    <path d="M10 20 L10 180 Q30 200 50 180 Q30 160 50 140 Q30 120 50 100 Q30 80 50 60 Q30 40 10 20 Z"></path>
+                    <path d="M10 20 L10 180 Q30 200 50 180 Q30 160 50 140 Q30 120 50 100 Q30 80 50 60 Q30 40 10 20 Z" stroke="white" fill="none" stroke-width="2"></path>
                     <!-- A -->
-                    <path d="M70 180 L110 20 L150 180 M85 100 L135 100"></path>
+                    <path d="M70 180 L110 20 L150 180 M85 100 L135 100" stroke="white" fill="none" stroke-width="2"></path>
                     <!-- T -->
-                    <path d="M170 20 L230 20 M200 20 L200 180"></path>
+                    <path d="M170 20 L230 20 M200 20 L200 180" stroke="white" fill="none" stroke-width="2"></path>
                     <!-- B -->
-                    <path d="M250 20 L250 180 Q270 200 290 180 Q270 160 290 140 Q270 120 290 100 Q270 80 290 60 Q270 40 250 20 Z"></path>
+                    <path d="M250 20 L250 180 Q270 200 290 180 Q270 160 290 140 Q270 120 290 100 Q270 80 290 60 Q270 40 250 20 Z" stroke="white" fill="none" stroke-width="2"></path>
                     <!-- A -->
-                    <path d="M310 180 L350 20 L390 180 M325 100 L375 100"></path>
+                    <path d="M310 180 L350 20 L390 180 M325 100 L375 100" stroke="white" fill="none" stroke-width="2"></path>
                     <!-- T (Baseball Bat) -->
-                    <path d="M410 180 L430 20 L490 20 L420 180 Z"></path> <!-- Bat shape -->
+                    <path d="M410 180 L430 20 L490 20 L420 180 Z" stroke="white" fill="none" stroke-width="2"></path> <!-- Bat shape -->
+
+                    <!-- Baseball field outline -->
+                    <path d="M600 20 L880 300 A260 260 0 0 1 320 300 Z" stroke="white" fill="none" stroke-width="2"></path>
+                    <path d="M600 20 L600 300" stroke="white" fill="none" stroke-width="2"></path>
+                    <path d="M320 300 L880 300" stroke="white" fill="none" stroke-width="2"></path>
+                    <path d="M320 300 L600 580 L880 300" stroke="white" fill="none" stroke-width="2"></path>
+                    <path d="M600 580 L600 300" stroke="white" fill="none" stroke-width="2"></path>
+                    
+                    <!-- Bases -->
+                    <circle cx="600" cy="300" r="10" fill="white"></circle> <!-- Pitcher's mound -->
+                    <rect x="590" y="10" width="20" height="20" transform="rotate(45 600 20)" fill="white"></rect> <!-- Home plate -->
+                    <rect x="790" y="290" width="20" height="20" transform="rotate(45 800 300)" fill="white"></rect> <!-- First base -->
+                    <rect x="590" y="490" width="20" height="20" transform="rotate(45 600 500)" fill="white"></rect> <!-- Second base -->
+                    <rect x="390" y="290" width="20" height="20" transform="rotate(45 400 300)" fill="white"></rect> <!-- Third base -->
                 </svg>
             </div>
 
