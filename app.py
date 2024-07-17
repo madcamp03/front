@@ -32,8 +32,8 @@ teams = ["삼성공업고등학교", "SSG상업고등학교", "키움증권고�
 
 # 로그인 함수
 def login(username, password):
-    # response = requests.post("http://35.209.111.224:3000/api/login", json={'username': 'heo', 'password': 'password'})
-    response = requests.post("http://localhost:3000/api/login", json={'username': username, 'password': password})
+    # response = requests.post("http://localhost:3000/api/login", json={'username': username, 'password': password})
+    response = requests.post("http://35.209.111.224:3000/api/login", json={'username': username, 'password': password})
     if response.status_code == 200:
         user_data = response.json()
         print(user_data)

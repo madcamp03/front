@@ -62,7 +62,10 @@ def get_team_id(team_name):
 # # 구단 정보 업데이트 함수(관리자/NO)
 
 def update_team_info(team_profile_image, team_name, team_home_base, team_coach, team_id):
-    response = requests.patch("http://localhost:3000/api/manager/update/team",
+    # response = requests.patch("http://localhost:3000/api/manager/update/team",
+    #                           json={"photo": team_profile_image, "team_name": team_name, "region": team_home_base,
+    #                                 "manager": team_coach, "team_id": team_id})
+    response = requests.patch("http://35.209.111.224:3000/api/manager/update/team",
                               json={"photo": team_profile_image, "team_name": team_name, "region": team_home_base,
                                     "manager": team_coach, "team_id": team_id})
     if response.status_code == 200:

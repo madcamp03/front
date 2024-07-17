@@ -33,47 +33,47 @@ lineup_mock_data = {
         "삼성공업고등학교": {
             "선발투수": "원태인",
             "1번 타자": {
-                "player_id": 21,
+                "player_id": 11,
                 "name": "김지찬",
                 "position": "CF"
             },
             "2번 타자": {
-                "player_id": 22,
+                "player_id": 12,
                 "name": "이재현",
                 "position": "SS"
             },
             "3번 타자": {
-                "player_id": 23,
+                "player_id": 13,
                 "name": "구자욱",
                 "position": "LF"
             },
             "4번 타자": {
-                "player_id": 24,
+                "player_id": 14,
                 "name": "박병호",
                 "position": "1B"
             },
             "5번 타자": {
-                "player_id": 25,
+                "player_id": 15,
                 "name": "강민호",
                 "position": "C"
             },
             "6번 타자": {
-                "player_id": 26,
+                "player_id": 16,
                 "name": "이성규",
                 "position": "DH"
             },
             "7번 타자": {
-                "player_id": 27,
+                "player_id": 17,
                 "name": "윤정빈",
                 "position": "RF"
             },
             "8번 타자": {
-                "player_id": 28,
+                "player_id": 18,
                 "name": "류지혁",
                 "position": "2B"
             },
             "9번 타자": {
-                "player_id": 29,
+                "player_id": 19,
                 "name": "전병우",
                 "position": "3B"
             },
@@ -81,47 +81,47 @@ lineup_mock_data = {
         "두산고등학교": {
             "선발투수": "곽빈",
             "1번 타자": {
-                "player_id": 31,
+                "player_id": 1,
                 "name": "정수빈",
                 "position": "CF"
             },
             "2번 타자": {
-                "player_id": 32,
+                "player_id": 2,
                 "name": "허경민",
                 "position": "3B"
             },
             "3번 타자": {
-                "player_id": 33,
+                "player_id": 3,
                 "name": "양의지",
                 "position": "C"
             },
             "4번 타자": {
-                "player_id": 34,
+                "player_id": 4,
                 "name": "김재환",
                 "position": "DH"
             },
             "5번 타자": {
-                "player_id": 35,
+                "player_id": 5,
                 "name": "양석환",
                 "position": "1B"
             },
             "6번 타자": {
-                "player_id": 36,
+                "player_id": 6,
                 "name": "강승호",
                 "position": "2B"
             },
             "7번 타자": {
-                "player_id": 37,
+                "player_id": 7,
                 "name": "라모스",
                 "position": "RF"
             },
             "8번 타자": {
-                "player_id": 38,
+                "player_id": 8,
                 "name": "이유찬",
                 "position": "SS"
             },
             "9번 타자": {
-                "player_id": 39,
+                "player_id": 9,
                 "name": "조수행",
                 "position": "LF"
             },
@@ -131,47 +131,47 @@ lineup_mock_data = {
         "SSG상업고등학교": {
             "선발투수": "김광현",
             "1번 타자": {
-                "player_id": 51,
+                "player_id": 11,
                 "name": "최지훈",
                 "position": "CF"
             },
             "2번 타자": {
-                "player_id": 52,
+                "player_id": 12,
                 "name": "추신수",
                 "position": "DH"
             },
             "3번 타자": {
-                "player_id": 53,
+                "player_id": 13,
                 "name": "최정",
                 "position": "3B"
             },
             "4번 타자": {
-                "player_id": 54,
+                "player_id": 14,
                 "name": "에레디아",
                 "position": "LF"
             },
             "5번 타자": {
-                "player_id": 55,
+                "player_id": 15,
                 "name": "한유섬",
                 "position": "RF"
             },
             "6번 타자": {
-                "player_id": 56,
+                "player_id": 16,
                 "name": "박성한",
                 "position": "SS"
             },
             "7번 타자": {
-                "player_id": 57,
+                "player_id": 17,
                 "name": "박지환",
                 "position": "2B"
             },
             "8번 타자": {
-                "player_id": 58,
+                "player_id": 18,
                 "name": "이지영",
                 "position": "C"
             },
             "9번 타자": {
-                "player_id": 59,
+                "player_id": 19,
                 "name": "고명준",
                 "position": "1B"
             },
@@ -179,47 +179,47 @@ lineup_mock_data = {
         "두산고등학교": {
             "선발투수": "곽빈",
             "1번 타자": {
-                "player_id": 31,
+                "player_id": 1,
                 "name": "정수빈",
                 "position": "CF"
             },
             "2번 타자": {
-                "player_id": 32,
+                "player_id": 2,
                 "name": "허경민",
                 "position": "3B"
             },
             "3번 타자": {
-                "player_id": 33,
+                "player_id": 3,
                 "name": "양의지",
                 "position": "C"
             },
             "4번 타자": {
-                "player_id": 34,
+                "player_id": 4,
                 "name": "김재환",
                 "position": "DH"
             },
             "5번 타자": {
-                "player_id": 35,
+                "player_id": 5,
                 "name": "양석환",
                 "position": "1B"
             },
             "6번 타자": {
-                "player_id": 36,
+                "player_id": 6,
                 "name": "강승호",
                 "position": "2B"
             },
             "7번 타자": {
-                "player_id": 37,
+                "player_id": 7,
                 "name": "라모스",
                 "position": "RF"
             },
             "8번 타자": {
-                "player_id": 38,
+                "player_id": 8,
                 "name": "이유찬",
                 "position": "SS"
             },
             "9번 타자": {
-                "player_id": 39,
+                "player_id": 9,
                 "name": "조수행",
                 "position": "LF"
             },
@@ -236,8 +236,8 @@ result_mock_data = {
         "경기 기록": {
             "승": "곽빈",
             "패": "김광현",
-            "홀": "이병헌, 최지강, 이영하",
-            "세": "김택연",
+            "홀드": "이병헌, 최지강, 이영하",
+            "세이브": "김택연",
             "결승타": "허경민(1회 무사 1루서 좌월 홈런)",
             "홈런": "허경민 5호(1회 2점 김광현)",
             "2루타": "김재환(4회), 양석환(4회), 양의지(5회), 전다민(8회)",
@@ -264,50 +264,108 @@ game_info_mock_data = [
 ]
 
 
+pitcher_response = requests.get("http://35.209.111.224:3000/api/pitcher/records").json()
+
 def map_team(id):
     return team_list[id]
 
 def transform_game_result_to_mock_data(game_result):
-    game_id = game_result['game_id']
-    game_record = {
-        game_id: {
-            "팀 기록": {
-                "승팀": {
-                    "팀명": team_list[game_result['winner_team_id']],  # 팀명을 데이터베이스에서 추가로 가져와야 합니다.
-                    "점수": game_result['winner_team_total_score'],
-                    "안타": game_result['winner_team_total_hits'],
-                    "홈런": game_result['winner_team_total_home_runs'],
-                    "도루": game_result['winner_team_total_stolen_bases'],
-                    "삼진": game_result['winner_team_total_strikeouts'],
-                    "병살": game_result['winner_team_total_double_plays'],
-                    "실책": game_result['winner_team_total_errors'],
+    game_id = game_result['game_id']        
+    pitcher_win = '미정'
+    pitcher_lose = '미정'
+    pitcher_save = '미정'
+    lineup_data = lineup_mock_data.get(game_id, {})
+    teams = list(lineup_data.keys())
+
+    for pitcher in pitcher_response:
+        if game_result['winning_pitcher_id'] == pitcher.get('player_id'):
+            pitcher_win = pitcher.get('player_name')
+        if game_result['losing_pitcher_id'] == pitcher.get('player_id'):
+            pitcher_lose = pitcher.get('player_name')
+        if game_result['save_pitcher_id'] == pitcher.get('player_id'):
+            pitcher_save = pitcher.get('player_name')
+
+    if game_result['winner_team_id'] == 0 and game_result['loser_team_id'] == 0:
+        game_record = {
+            game_id: {
+                "팀 기록": {
+                    "원정 팀": {
+                        "팀명": teams[0],  # 팀명을 데이터베이스에서 추가로 가져와야 합니다.
+                        "점수": game_result['winner_team_total_score'],
+                        "안타": game_result['winner_team_total_hits'],
+                        "홈런": game_result['winner_team_total_home_runs'],
+                        "도루": game_result['winner_team_total_stolen_bases'],
+                        "삼진": game_result['winner_team_total_strikeouts'],
+                        "병살": game_result['winner_team_total_double_plays'],
+                        "실책": game_result['winner_team_total_errors'],
+                    },
+                    "홈 팀": {
+                        "팀명": teams[1],  # 팀명을 데이터베이스에서 추가로 가져와야 합니다.
+                        "점수": game_result['loser_team_total_score'],
+                        "안타": game_result['loser_team_total_hits'],
+                        "홈런": game_result['loser_team_total_home_runs'],
+                        "도루": game_result['loser_team_total_stolen_bases'],
+                        "삼진": game_result['loser_team_total_strikeouts'],
+                        "병살": game_result['loser_team_total_double_plays'],
+                        "실책": game_result['loser_team_total_errors'],
+                    }
                 },
-                "패팀": {
-                    "팀명": team_list[game_result['loser_team_id']],  # 팀명을 데이터베이스에서 추가로 가져와야 합니다.
-                    "점수": game_result['loser_team_total_score'],
-                    "안타": game_result['loser_team_total_hits'],
-                    "홈런": game_result['loser_team_total_home_runs'],
-                    "도루": game_result['loser_team_total_stolen_bases'],
-                    "삼진": game_result['loser_team_total_strikeouts'],
-                    "병살": game_result['loser_team_total_double_plays'],
-                    "실책": game_result['loser_team_total_errors'],
+                "경기 기록": {
+                    "승": pitcher_win,
+                    "패": pitcher_lose,  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
+                    "홀드": game_result['hold_pitcher_ids'],  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
+                    "세이브": pitcher_save,  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
+                    "결승타": game_result['deciding_hit'],
+                    "홈런": game_result['home_run'],
+                    "2루타": game_result['hit_base2'],
+                    "3루타": game_result['hit_base3'],
+                    "실책": game_result['game_error'],
+                    "주루사": game_result['base_running_out'],
+                    "병살타": game_result['double_play_hit'],
                 }
-            },
-            "경기 기록": {
-                "승": game_result['winning_pitcher_id'],  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
-                "패": game_result['losing_pitcher_id'],  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
-                "홀": game_result['hold_pitcher_ids'],  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
-                "세": game_result['save_pitcher_id'],  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
-                "결승타": game_result['deciding_hit'],
-                "홈런": game_result['home_run'],
-                "2루타": game_result['hit_base2'],
-                "3루타": game_result['hit_base3'],
-                "실책": game_result['game_error'],
-                "주루사": game_result['base_running_out'],
-                "병살타": game_result['double_play_hit'],
             }
         }
-    }
+
+    else:
+        game_record = {
+            game_id: {
+                "팀 기록": {
+                    "승팀": {
+                        "팀명": team_list[game_result['winner_team_id']],  # 팀명을 데이터베이스에서 추가로 가져와야 합니다.
+                        "점수": game_result['winner_team_total_score'],
+                        "안타": game_result['winner_team_total_hits'],
+                        "홈런": game_result['winner_team_total_home_runs'],
+                        "도루": game_result['winner_team_total_stolen_bases'],
+                        "삼진": game_result['winner_team_total_strikeouts'],
+                        "병살": game_result['winner_team_total_double_plays'],
+                        "실책": game_result['winner_team_total_errors'],
+                    },
+                    "패팀": {
+                        "팀명": team_list[game_result['loser_team_id']],  # 팀명을 데이터베이스에서 추가로 가져와야 합니다.
+                        "점수": game_result['loser_team_total_score'],
+                        "안타": game_result['loser_team_total_hits'],
+                        "홈런": game_result['loser_team_total_home_runs'],
+                        "도루": game_result['loser_team_total_stolen_bases'],
+                        "삼진": game_result['loser_team_total_strikeouts'],
+                        "병살": game_result['loser_team_total_double_plays'],
+                        "실책": game_result['loser_team_total_errors'],
+                    }
+                },
+                "경기 기록": {
+                    "승": pitcher_win,
+                    "패": pitcher_lose,  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
+                    "홀드": game_result['hold_pitcher_ids'],  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
+                    "세이브": pitcher_save,  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
+                    "결승타": game_result['deciding_hit'],
+                    "홈런": game_result['home_run'],
+                    "2루타": game_result['hit_base2'],
+                    "3루타": game_result['hit_base3'],
+                    "실책": game_result['game_error'],
+                    "주루사": game_result['base_running_out'],
+                    "병살타": game_result['double_play_hit'],
+                }
+            }
+        }
     return game_record
 
 def show_game_results(game_id):
@@ -316,7 +374,9 @@ def show_game_results(game_id):
     #     st.write("경기 결과가 없습니다.")
     #     return
     
-    response = requests.post("http://localhost:3000/api/game/result", json={'game_id': game_id})
+    # response = requests.post("http://localhost:3000/api/game/result", json={'game_id': game_id})
+    response = requests.post("http://35.209.111.224:3000/api/game/result", json={'game_id': game_id})
+
     game_result = response.json()
     result = transform_game_result_to_mock_data(game_result).get(game_id)
     team_record = result.get("팀 기록", {})
@@ -330,10 +390,16 @@ def show_game_results(game_id):
     if st.session_state.get('role') == 'manager':
         edited_team_df = st.data_editor(team_df, use_container_width=True, key=f"{game_id} team_record")
         st.subheader("경기 기록")
+
         for key, value in game_record.items():
             value = st.text_input(f"{key}", value, key=f'{game_id} {key}')
-            game_record[key] = value
+            if key == '승' or key == '패' or key == '세이브':
+                for pitcher in pitcher_response:
+                    if value == pitcher.get('player_name'):
+                        game_record[key] = pitcher.get('player_id')
+            else: game_record[key] = value
             st.write(f"**{key}**: {value}")
+
         
         if st.button('경기 기록 저장', key=f"save_button_{game_id}"):
             updated_data = {
@@ -356,8 +422,8 @@ def show_game_results(game_id):
                 "loser_team_total_errors": int(edited_team_df.at[1, '실책']),
                 "winning_pitcher_id": game_record['승'],
                 "losing_pitcher_id": game_record['패'],
-                "hold_pitcher_ids": game_record['홀'],
-                "save_pitcher_id": game_record['세'],
+                "hold_pitcher_ids": game_record['홀드'],
+                "save_pitcher_id": game_record['세이브'],
                 "deciding_hit": game_record['결승타'],
                 "home_run": game_record['홈런'],
                 "hit_base2": game_record['2루타'],
@@ -368,13 +434,77 @@ def show_game_results(game_id):
             }
 
             # Send the updated data to the backend
-            patch_response = requests.patch("http://localhost:3000/api/results/update", json=updated_data)
+            # patch_response = requests.patch("http://localhost:3000/api/results/update", json=updated_data)
+            patch_response = requests.patch("http://35.209.111.224:3000/api/results/update", json=updated_data)
             if patch_response.status_code == 200:
                 st.success("Game result updated successfully!")
             else:
                 st.error("Failed to update game result.")
     
+        st.subheader("선수 기록")
+        if list(team_record.keys()) == ["승팀", "패팀"]:
+            for team_side in ["승팀", "패팀"]:
+                st.write(f"{team_record[team_side]['팀명']} 선수 기록")
+                player_data = lineup_mock_data[game_id][team_record[team_side]['팀명']]
+                player_records = []
+                for key, player in player_data.items():
+                    if isinstance(player, dict):
+                        player_dict = {
+                            "타순": key,
+                            "id": player['player_id'],
+                            "이름": player['name'],
+                            "포지션": player['position'],
+                            "타석": 0,
+                            "타수": 0,
+                            "득점": 0,
+                            "안타": 0,
+                            "2루타": 0,
+                            "3루타": 0,
+                            "홈런": 0,
+                            "타점": 0,
+                            "볼넷": 0,
+                            "삼진": 0,
+                            "희생플라이": 0
+                        }
+                        player_records.append(player_dict)
 
+                player_df = pd.DataFrame(player_records)
+                player_df.drop(['id'], axis=1, inplace=True)
+                edited_player_df = st.data_editor(player_df, use_container_width=True, key=f'{game_id}_{team_side}_hitter_data')
+
+        elif list(team_record.keys()) == ["원정 팀", "홈 팀"]:
+            for team_side in ["원정 팀", "홈 팀"]:
+                st.write(f"{team_record[team_side]['팀명']} 선수 기록")
+                player_data = lineup_mock_data[game_id][team_record[team_side]['팀명']]
+                player_records = []
+                for key, player in player_data.items():
+                    if isinstance(player, dict):
+                        player_dict = {
+                            "타순": key,
+                            "id": player['player_id'],
+                            "이름": player['name'],
+                            "포지션": player['position'],
+                            "타석": 0,
+                            "타수": 0,
+                            "득점": 0,
+                            "안타": 0,
+                            "2루타": 0,
+                            "3루타": 0,
+                            "홈런": 0,
+                            "타점": 0,
+                            "볼넷": 0,
+                            "삼진": 0,
+                            "희생플라이": 0
+                        }
+                        player_records.append(player_dict)
+
+                player_df = pd.DataFrame(player_records)
+                player_df.drop(['id'], axis=1, inplace=True)
+                edited_player_df = st.data_editor(player_df, use_container_width=True, key=f'{game_id}_{team_side}_hitter_data')
+            
+        if st.button('선수 기록 저장', key=f"save_player_button_{game_id}"):
+            hitters_data = edited_player_df.to_dict('records')
+            
     else:
         st.dataframe(team_df)
         st.subheader("경기 기록")
@@ -464,6 +594,7 @@ def show_today_games():
                         col1, col2 = st.columns(2)
                         with col1:
                             st.write(f"{team_list[game['team_home_id']]} 라인업")
+                            player_records = []
                             for key, player in lineup_mock_data[game['game_id']][team_list[game['team_home_id']]].items():
                                 if isinstance(player, dict):
                                     st.write(

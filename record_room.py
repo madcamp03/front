@@ -17,7 +17,8 @@ hitter_basic_info = {
 }
 
 
-hitter_response = requests.get("http://localhost:3000/api/hitter/records").json()
+# hitter_response = requests.get("http://localhost:3000/api/hitter/records").json()
+hitter_response = requests.get("http://35.209.111.224:3000/api/hitter/records").json()
 hitter_initial_df = pd.DataFrame(hitter_response)
 hitter_initial_df.rename(columns={
     'record_id': 'record_id',
@@ -49,7 +50,8 @@ hitter_initial_df.rename(columns={
 }, inplace=True)
 
 
-pitcher_response = requests.get("http://localhost:3000/api/pitcher/records").json()
+# pitcher_response = requests.get("http://localhost:3000/api/pitcher/records").json()
+pitcher_response = requests.get("http://35.209.111.224:3000/api/pitcher/records").json()
 pitcher_initial_df = pd.DataFrame(pitcher_response)
 pitcher_initial_df.rename(columns={
     'record_id': 'record_id',
@@ -122,9 +124,11 @@ def get_match_score(name, query):
 def show_player_detail(player_type, player_id, player_stats, player_stats_columns):
     if player_type == 'hitter':
         hitter_response = requests.post("http://localhost:3000/api/hitter/details", json={'player_id': player_id})
+        # hitter_response = requests.post("http://35.209.111.224:3000/api/hitter/details", json={'player_id': player_id})
         player = hitter_response.json()
     elif player_type == 'pitcher':
         pitcher_response = requests.post("http://localhost:3000/api/pitcher/details", json={'player_id': player_id})
+        # pitcher_response = requests.post("http://35.209.111.224:3000/api/pitcher/details", json={'player_id': player_id})
         player = pitcher_response.json()
 
     player_name = player.get("player_name")
