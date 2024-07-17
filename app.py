@@ -26,11 +26,28 @@ def reset_session_state():
 if 'user_data' not in st.session_state:
     st.session_state['user_data'] = {}
 
-teams = ["삼성공업고등학교", "SSG상업고등학교", "키움증권고등학교", "두산고등학교"]
+    
+teams = ["삼성공업고등학교", "SSG상업고등학교", "키움증권고등학교", "두산고등학교"] 
 
+
+# 로그인 함수
+def login(username, password):
+    # response = requests.post("http://35.209.111.224:3000/api/login", json={'username': 'heo', 'password': 'password'})
+    response = requests.post("http://localhost:3000/api/login", json={'username': username, 'password': password})
+    if response.status_code == 200:
+        user_data = response.json()
+        print(user_data)
+        reset_session_state()
+        st.session_state['username'] = user_data['user_name']
+        st.session_state['role'] = user_data['user_role']
+        st.session_state['team'] = user_data['team_id']
+        st.session_state['logged_in'] = True
+        return True
+    else:
+        return 
+
+      
 # 회원가입 함수
-
-
 def signup(username, password, role, team):
     if username not in st.session_state['user_data']:
         st.session_state['user_data'][username] = {
@@ -39,9 +56,26 @@ def signup(username, password, role, team):
         return True
     return False
 
+
+# 로그인 페이지
+def login_page():
+    st.title("로그인")
+
+    username = st.text_input("아이디")
+    password = st.text_input("비밀번호", type='password')
+
+    if st.button("로그인"):
+        if login(username, password):
+            st.success("로그인 성공!")
+            st.experimental_rerun()
+        else:
+            st.error("아이디 또는 비밀번호가 잘못되었습니다.")
+
+    if st.button("회원가입"):
+        st.session_state['signup'] = True
+  
+  
 # 회원가입 페이지
-
-
 def signup_page():
     st.title("회원가입")
 
@@ -87,25 +121,39 @@ if 'logged_in' not in st.session_state:
 if 'signup' not in st.session_state:
     st.session_state['signup'] = False
 
-
-# if not st.session_state['logged_in']:
-#     if st.session_state['signup']:
-#         signup_page()
-#     else:
-#         login_page()
+if not st.session_state['logged_in']:
+    if st.session_state['signup']:
+        signup_page()
+    else:
+        login_page()
+        
 else:
     with st.sidebar:
-        choose = option_menu(
-            "Menu",
-            ["메인", "기록실", "오늘의 경기", "소속 팀", "마이페이지", "관리페이지"],
-            default_index=0,
-            styles={
-                "container": {"padding": "5!important", "background-color": "#ffffff"},
-                "icon": {"color": "white", "font-size": "25px"},
-                "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
-                "nav-link-selected": {"background-color": "#191848"},
-            }
-        )
+        if st.session_state['role'] == 'manager':
+            choose = option_menu(
+                "Menu",
+                ["메인", "기록실", "오늘의 경기", "소속 팀", "마이페이지", "관리페이지"],
+                default_index=0,
+                styles={
+                    "container": {"padding": "5!important", "background-color": "#ffffff"},
+                    "icon": {"color": "white", "font-size": "25px"},
+                    "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
+                    "nav-link-selected": {"background-color": "#191848"},
+                }
+            )
+        else:
+            choose = option_menu(
+                "Menu",
+                ["메인", "기록실", "오늘의 경기", "소속 팀", "마이페이지"],
+                default_index=0,
+                styles={
+                    "container": {"padding": "5!important", "background-color": "#ffffff"},
+                    "icon": {"color": "white", "font-size": "25px"},
+                    "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
+                    "nav-link-selected": {"background-color": "#191848"},
+                }
+            )
+
 
     # 각 메뉴에 대한 페이지 내용
     if choose == "메인":

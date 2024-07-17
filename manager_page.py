@@ -2,6 +2,7 @@ from PIL import Image
 import pandas as pd
 import json
 import os
+import requests
 from openai import OpenAI
 import streamlit as st
 from dotenv import load_dotenv
@@ -16,9 +17,8 @@ api_key = os.getenv("API_KEY")
 # Initialize the OpenAI client by setting the api_key attribute
 client = OpenAI(api_key=api_key)
 
+
 # 팀 소속 선수 데이터(NO)
-
-
 # def get_player_list(team_id):
 #     response = requests.get("http://localhost:3000/api/manager/get/players",
 #                             json={"team_id": team_id})
@@ -27,9 +27,8 @@ client = OpenAI(api_key=api_key)
 #     else:
 #         return False
 
+
 # # 선수 정보 업데이트 함수(관리자/NO)
-
-
 # def update_player_info(name, role, team_id):
 #     response = requests.patch("http://localhost:3000/api/manager/update/player",
 #                              json={"player_name": name, "position": role, "team_id": team_id})
@@ -38,8 +37,8 @@ client = OpenAI(api_key=api_key)
 #     else:
 #         return False
 
-# # 구단 정보 업데이트 함수(관리자/NO)
 
+# 구단 정보 업데이트 함수(관리자/NO)
 def update_team_info(team_profile_image, team_name, team_home_base, team_coach, team_id):
     response = requests.patch("http://localhost:3000/api/manager/update/team",
                               json={"photo": team_profile_image, "team_name": team_name, "region": team_home_base,
@@ -50,8 +49,6 @@ def update_team_info(team_profile_image, team_name, team_home_base, team_coach, 
         return False
 
 # 상태 저장을 위한 함수
-
-
 def initialize_session_state():
     if 'final_lineup_data' not in st.session_state:
         st.session_state['final_lineup_data'] = pd.DataFrame(
@@ -132,7 +129,6 @@ def show_manager_page():
         organization = ""
         if role in ["선수", "관리자"]:
             organization = st.text_input("소속 단체", key="player_organization")
-
         if st.button("선수 정보 변경"):
             st.toast(":green[선수 정보 수정 성공!]")
 
@@ -147,8 +143,10 @@ def show_manager_page():
             team_name = st.text_input("팀 이름", key="team_name")
             team_home_base = st.text_input("연고지", key="team_home_base")
             team_coach = st.text_input("감독", key="team_coach")
+
             if st.button("팀 정보 변경"):
                 st.toast(":green[팀 정보 수정 성공!]")
+
 
         with tab2:
             st.text_area("팀 타임라인", key="team_timeline")
