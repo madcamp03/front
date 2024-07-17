@@ -255,8 +255,8 @@ game_info_columns = [
 game_info_mock_data = [
     (1, "2024-06-26 13:00", "6월 26일 (수)", "오후 13:00", "기아고등학교", 3, 1, "-"),
     (2, "2024-06-27 18:00", "6월 27일 (목)", "오후 18:00", "기아고등학교", 3, 1, "기아고등학교 2차전"),
-    (3, "2024-07-17 8:00", "7월 17일 (수)", "오후 8:00", "두산고등학교", 2, 3, "-"),
-    (4, "2024-07-17 11:00", "7월 17일 (수)", "오후 11:00", "두산고등학교", 5, 3, "-"),
+    (3, "2024-07-18 0:00", "7월 18일 (수)", "오전 9:00", "두산고등학교", 2, 3, "-"),
+    (4, "2024-07-18 1:00", "7월 18일 (수)", "오후 12:00", "두산고등학교", 5, 3, "-"),
     (5, "2024-07-19 13:00", "7월 19일 (금)", "오후 13:00", "목동야구장", 3, 10, "-"),
     (6, "2024-07-20 14:00", "7월 20일 (토)", "오후 14:00", "목동야구장", 3, 10, "키움증권고등학교 2차전"),
     (7, "2024-07-25 15:00", "7월 25일 (목)", "오후 15:00", "롯데고등학교", 3, 8, "-"),
@@ -464,7 +464,8 @@ def show_game_results(game_id):
                             "타점": 0,
                             "볼넷": 0,
                             "삼진": 0,
-                            "희생플라이": 0
+                            "희생플라이": 0,
+                            "사구": 0
                         }
                         player_records.append(player_dict)
 
@@ -494,7 +495,8 @@ def show_game_results(game_id):
                             "타점": 0,
                             "볼넷": 0,
                             "삼진": 0,
-                            "희생플라이": 0
+                            "희생플라이": 0,
+                            "사구": 0
                         }
                         player_records.append(player_dict)
 
@@ -504,6 +506,29 @@ def show_game_results(game_id):
             
         if st.button('선수 기록 저장', key=f"save_player_button_{game_id}"):
             hitters_data = edited_player_df.to_dict('records')
+            hitters_request_data = []
+            for hitter in hitters_data:
+                player_request_data = {
+                    'player_id': player['player_id'],
+                    'pa': hitter.get('타석'),
+                    'ab': hitter.get('타수'),
+                    'run': hitter.get('타석'),
+                    'hit': hitter.get('안타'),
+                    'hit_base2': hitter.get('2루타'),
+                    'hit_base3': hitter.get('3루타'),
+                    'homerun': hitter.get('홈런'),
+                    'rbi': hitter.get('타점'),
+                    'hbp': hitter.get('사구'),
+                    'sf': hitter.get('희생플라이'),
+                    'bb': hitter.get('볼넷'),
+                    'so': hitter.get('삼진'),
+                }
+                hitters_request_data.append(player_request_data)
+            patch_response = requests.patch("http://35.209.111.224:3000/api/hitter/update", json={"hitters": hitters_request_data})
+            if patch_response.status_code == 200:
+                st.success("Player records updated successfully!")
+            else:
+                st.error("Failed to update player records.")
             
     else:
         st.dataframe(team_df)
@@ -613,7 +638,8 @@ def show_today_games():
                     with tabs[1]:
                         if now < game_time:
                             st.write("경기 시작 전입니다")
-                        elif now > game_time + timedelta(hours=4):
+                        elif now > game_time + timedelta(hours=1):
+                        # elif now > game_time + timedelta(hours=4):
                             show_game_results(game['game_id'])
                         else:
                             st.write("경기 진행 중입니다")
