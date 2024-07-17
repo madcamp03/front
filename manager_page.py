@@ -17,7 +17,26 @@ api_key = os.getenv("API_KEY")
 client = OpenAI(api_key=api_key)
 
 
-# 팀 소속 선수 데이터(NO)
+team_list = {
+    0: "미정",
+    1: "기아고등학교",
+    2: "삼성공업고등학교",
+    3: "두산고등학교",
+    4: "엘지디지털고등학교",
+    5: "SSG상업고등학교",
+    6: "NC특성화고등학교",
+    7: "KT인터넷고등학교",
+    8: "롯데고등학교",
+    9: "한화고등학교",
+    10: "키움증권고등학교"
+}
+
+
+def get_team_id(team_name):
+    for id, name in team_list.items():
+        if name == team_name:
+            return id
+    return None
 
 
 # def get_player_list(team_id):
@@ -179,7 +198,7 @@ def show_manager_page():
         st.session_state['selected_match'] = None
 
     if 'match_info' not in st.session_state:
-        st.session_state['match_info'] = None
+        st.session_state['match_info'] = []
 
 
     with col2:
@@ -189,36 +208,37 @@ def show_manager_page():
             match_date = st.date_input("날짜")
             match_time = st.time_input("시간")
             match_place = st.text_input("장소")
-            home_team_id = st.text_input("우리팀 ID")
-            away_team_id = st.text_input("상대팀 ID")
-            match_description = st.text_area("게임 설명")
+            home_team = st.text_input("홈 팀")
+            away_team = st.text_input("원정 팀")
+            match_description = st.text_area("경기 설명")
             submit_button = st.form_submit_button(label='경기 추가')
 
         if submit_button:
-            if match_date and match_time and match_place and home_team_id and away_team_id:
+            if match_date and match_time and match_place and home_team and away_team:
                 match_info = {
                     '날짜': match_date.strftime('%Y-%m-%d'),
                     '시간': match_time.strftime('%H:%M'),
                     '장소': match_place,
-                    '우리팀 ID': home_team_id,
-                    '상대팀 ID': away_team_id,
+                    '홈 팀': get_team_id(home_team),
+                    '원정 팀': get_team_id(away_team),
                     '게임 설명': match_description
                 }
-                st.session_state['match_info'] = match_info
+                game_list = st.session_state['match_info']
+                game_list.append(match_info)
+                st.session_state['match_info'] = game_list
                 st.toast(":green[경기 정보가 추가되었습니다.]")
             else:
                 st.toast(":red[모든 필드를 작성해주세요.]")
 
     with col3:
-        st.header("추천 라인업 테이블")
+        st.header("라인업 테이블 등록")
 
         if 'match_info' in st.session_state and st.session_state['match_info']:
             try:
                 match_info = st.session_state['match_info']
-                if isinstance(match_info, dict):
-                    match_info = [match_info]  # 단일 매치 정보를 리스트로 변환
-                match_list = [f"{match['날짜']} {match['시간']
-                                               } - {match['장소']}" for match in match_info]
+                # if isinstance(match_info, dict):
+                    # match_info = [match_info]  # 단일 매치 정보를 리스트로 변환
+                match_list = [f"{match['날짜']} {match['시간']} - {match['장소']}" for match in match_info]
 
                 # Select a specific match from the selectbox
                 selected_match = st.selectbox(
