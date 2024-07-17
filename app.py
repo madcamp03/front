@@ -28,9 +28,11 @@ teams = ["삼성공업고등학교", "SSG상업고등학교", "키움증권고�
 
 # 로그인 함수
 def login(username, password):
-    response = requests.post("http://34.136.30.83:3000/api/login", json={"username": username, "password": password})
+    # response = requests.post("http://35.209.111.224:3000/api/login", json={'username': 'heo', 'password': 'password'})
+    response = requests.post("http://localhost:3000/api/login", json={'username': username, 'password': password})
     if response.status_code == 200:
         user_data = response.json()
+        print(user_data)
         reset_session_state()
         st.session_state['username'] = user_data['user_name']
         st.session_state['role'] = user_data['user_role']
@@ -119,17 +121,31 @@ if not st.session_state['logged_in']:
         login_page()
 else:
     with st.sidebar:
-        choose = option_menu(
-            "Menu",
-            ["메인", "기록실", "오늘의 경기", "소속 팀", "마이페이지", "관리페이지"],
-            default_index=0,
-            styles={
-                "container": {"padding": "5!important", "background-color": "#ffffff"},
-                "icon": {"color": "white", "font-size": "25px"},
-                "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
-                "nav-link-selected": {"background-color": "#191848"},
-            }
-        )
+        if st.session_state['role'] == 'manager':
+            choose = option_menu(
+                "Menu",
+                ["메인", "기록실", "오늘의 경기", "소속 팀", "마이페이지", "관리페이지"],
+                default_index=0,
+                styles={
+                    "container": {"padding": "5!important", "background-color": "#ffffff"},
+                    "icon": {"color": "white", "font-size": "25px"},
+                    "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
+                    "nav-link-selected": {"background-color": "#191848"},
+                }
+            )
+        else:
+            choose = option_menu(
+                "Menu",
+                ["메인", "기록실", "오늘의 경기", "소속 팀", "마이페이지"],
+                default_index=0,
+                styles={
+                    "container": {"padding": "5!important", "background-color": "#ffffff"},
+                    "icon": {"color": "white", "font-size": "25px"},
+                    "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
+                    "nav-link-selected": {"background-color": "#191848"},
+                }
+            )
+
 
     # 각 메뉴에 대한 페이지 내용
     if choose == "메인":

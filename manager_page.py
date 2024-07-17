@@ -2,6 +2,7 @@ from PIL import Image
 import pandas as pd
 import json
 import os
+import requests
 from openai import OpenAI
 import streamlit as st
 from dotenv import load_dotenv
@@ -15,8 +16,38 @@ api_key = os.getenv("API_KEY")
 # Initialize the OpenAI client by setting the api_key attribute
 client = OpenAI(api_key=api_key)
 
-# 상태 저장을 위한 함수
 
+# 팀 소속 선수 데이터(NO)
+
+def get_player_list(team_id):
+    response = requests.get("http://localhost:3000/api/manager/get/players",
+                            json={"team_id": team_id})
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return False
+
+# 선수 정보 업데이트 함수(관리자/NO)
+
+def update_player_info(name, role, team_id):
+    response = requests.patch("http://localhost:3000/api/manager/update/player",
+                             json={"player_name": name, "position": role, "team_id": team_id})
+    if response.status_code == 200:
+        return True
+    else:
+        return False
+
+# 구단 정보 업데이트 함수(관리자/NO)
+
+def update_team_info(team_profile_image, team_name, team_home_base, team_coach, team_id):
+    response = requests.patch("http://localhost:3000/api/manager/update/team",
+                             json={"photo": team_profile_image, "team_name": team_name, "region": team_home_base,
+                                    "manager": team_coach, "team_id": team_id})
+    if response.status_code == 200:
+        return True
+    else:
+        return False
+    
 
 def initialize_session_state():
     if 'final_lineup_data' not in st.session_state:
@@ -69,18 +100,34 @@ def show_manager_page():
     st.title("관리자 페이지")
 
     col1, col2, col3 = st.columns(3)
+    team_id = st.session_state['team']
+    st.write(team_id)
 
     with col1:
         st.header("선수 정보 변경")
-        player_profile_image = st.file_uploader(
-            "선수 프로필 사진 업로드", type=["png", "jpg", "jpeg"], key="player_image")
-        if player_profile_image:
-            st.image(Image.open(player_profile_image), caption="선수 프로필 사진")
-        name = st.text_input("이름", key="player_name")
-        role = st.selectbox(
-            "포지션", ["투수", "포수", "1루수", "2루수", "3루수"], key="player_role")
-        if role in ["선수", "관리자"]:
-            organization = st.text_input("소속 단체", key="player_organization")
+        st.write(team_id)
+        # players_df = get_player_list(team_id)
+        # st.write(players_df)
+        # # 선수 목록을 select box로 표시
+        # selected_player_name = st.selectbox(
+        #     "선수를 선택하세요", players_df['이름'].tolist())
+        # selected_player_info = players_df[players_df['이름']
+        #                                   == selected_player_name].iloc[0]
+
+        # # 선택된 선수의 기본 정보를 설정
+        # name = selected_player_name
+        # role = st.selectbox(
+        #     "포지션", ["투수", "포수", "1루수", "2루수", "3루수"], key="player_role", index=["투수", "포수", "1루수", "2루수", "3루수"].index(selected_player_info['포지션'])
+        # )
+        # if role in ["선수", "관리자"]:
+        #     organization = st.text_input("소속 단체", key="player_organization")
+
+        # if st.button("저장"):
+        #     if update_player_info(name, role, team_id):
+        #         st.success("선수 정보 수정 성공!")
+        #         st.experimental_rerun()
+        #     else:
+        #         st.error("선수 정보가 수정되지 못했습니다.")
 
         st.header("팀 정보 변경")
         tab1, tab2 = st.tabs(["기본 정보", "추가 정보"])
@@ -91,10 +138,14 @@ def show_manager_page():
             if team_profile_image:
                 st.image(Image.open(team_profile_image), caption="팀 프로필 사진")
             team_name = st.text_input("팀 이름", key="team_name")
-            team_creation_year = st.text_input(
-                "창단연도", key="team_creation_year")
             team_home_base = st.text_input("연고지", key="team_home_base")
             team_coach = st.text_input("감독", key="team_coach")
+            if st.button("저장"):
+                if update_team_info(team_profile_image, team_name, team_home_base, team_coach, team_id):
+                    st.success("팀 정보 수정 성공!")
+                    st.experimental_rerun()
+                else:
+                    st.error("팀 정보가 수정되지 못했습니다.")
 
         with tab2:
             st.text_area("팀 타임라인", key="team_timeline")
@@ -144,5 +195,5 @@ def show_manager_page():
             st.session_state['final_lineup_data'])
         st.session_state['final_lineup_data'] = edited_df
 
-        if st.button("저장"):
+        if st.button("라인업 저장"):
             validate_and_send()

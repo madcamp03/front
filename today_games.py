@@ -1,3 +1,4 @@
+import requests
 import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
@@ -6,6 +7,7 @@ from datetime import datetime, timedelta
 team = "두산고등학교"
 
 team_list = {
+    0: "미정",
     1: "기아고등학교",
     2: "삼성공업고등학교",
     3: "두산고등학교",
@@ -17,6 +19,14 @@ team_list = {
     9: "한화고등학교",
     10: "키움증권고등학교"
 }
+
+
+def get_team_id(team_name):
+    for id, name in team_list.items():
+        if name == team_name:
+            return id
+    return None
+
 
 lineup_mock_data = {
     3: {
@@ -220,10 +230,14 @@ lineup_mock_data = {
 result_mock_data = {
     4: {
         "팀 기록": {
-            "SSG": {"안타": 5, "홈런": 0, "도루": 0, "삼진": 7, "병살": 0, "실책": 2},
-            "두산": {"안타": 10, "홈런": 1, "도루": 0, "삼진": 7, "병살": 1, "실책": 0}
+            "승팀": {"팀명": "두산고등학교","점수": 8, "안타": 10, "홈런": 1, "도루": 0, "삼진": 7, "병살": 1, "실책": 0},
+            "패팀": {"팀명": "SSG상업고등학교", "점수": 5, "안타": 5, "홈런": 0, "도루": 0, "삼진": 7, "병살": 0, "실책": 2}
         },
         "경기 기록": {
+            "승": "곽빈",
+            "패": "김광현",
+            "홀": "이병헌, 최지강, 이영하",
+            "세": "김택연",
             "결승타": "허경민(1회 무사 1루서 좌월 홈런)",
             "홈런": "허경민 5호(1회 2점 김광현)",
             "2루타": "김재환(4회), 양석환(4회), 양의지(5회), 전다민(8회)",
@@ -236,41 +250,143 @@ result_mock_data = {
 }
 
 game_info_columns = [
-    "game_id", "날짜 및 시간", "장소", "team_away_id", "team_home_id", "memo"
+    "game_id", "날짜 및 시간", "Date", "Time", "장소", "team_away_id", "team_home_id", "memo"
 ]
 game_info_mock_data = [
-    (1, "2024-06-26 13:00", "기아고등학교", 3, 1, "-"),
-    (2, "2024-06-27 18:00", "기아고등학교", 3, 1, "기아고등학교 2차전"),
-    (3, "2024-07-14 13:00", "두산고등학교", 2, 3, "-"),
-    (4, "2024-07-15 13:00", "두산고등학교", 5, 3, "-"),
-    (5, "2024-07-19 13:00", "목동야구장", 3, 10, "-"),
-    (6, "2024-07-20 14:00", "목동야구장", 3, 10, "키움증권고등학교 2차전"),
-    (7, "2024-07-25 15:00", "롯데고등학교", 3, 8, "-"),
-    (8, "2024-07-29 15:00", "두산고등학교", 4, 3, "-"),
+    (1, "2024-06-26 13:00", "6월 26일 (수)", "오후 13:00", "기아고등학교", 3, 1, "-"),
+    (2, "2024-06-27 18:00", "6월 27일 (목)", "오후 18:00", "기아고등학교", 3, 1, "기아고등학교 2차전"),
+    (3, "2024-07-17 8:00", "7월 17일 (수)", "오후 8:00", "두산고등학교", 2, 3, "-"),
+    (4, "2024-07-17 11:00", "7월 17일 (수)", "오후 11:00", "두산고등학교", 5, 3, "-"),
+    (5, "2024-07-19 13:00", "7월 19일 (금)", "오후 13:00", "목동야구장", 3, 10, "-"),
+    (6, "2024-07-20 14:00", "7월 20일 (토)", "오후 14:00", "목동야구장", 3, 10, "키움증권고등학교 2차전"),
+    (7, "2024-07-25 15:00", "7월 25일 (목)", "오후 15:00", "롯데고등학교", 3, 8, "-"),
+    (8, "2024-07-29 15:00", "7월 29일 (월)", "오후 15:00", "두산고등학교", 4, 3, "-"),
 ]
 
 
 def map_team(id):
     return team_list[id]
 
+def transform_game_result_to_mock_data(game_result):
+    game_id = game_result['game_id']
+    game_record = {
+        game_id: {
+            "팀 기록": {
+                "승팀": {
+                    "팀명": team_list[game_result['winner_team_id']],  # 팀명을 데이터베이스에서 추가로 가져와야 합니다.
+                    "점수": game_result['winner_team_total_score'],
+                    "안타": game_result['winner_team_total_hits'],
+                    "홈런": game_result['winner_team_total_home_runs'],
+                    "도루": game_result['winner_team_total_stolen_bases'],
+                    "삼진": game_result['winner_team_total_strikeouts'],
+                    "병살": game_result['winner_team_total_double_plays'],
+                    "실책": game_result['winner_team_total_errors'],
+                },
+                "패팀": {
+                    "팀명": team_list[game_result['loser_team_id']],  # 팀명을 데이터베이스에서 추가로 가져와야 합니다.
+                    "점수": game_result['loser_team_total_score'],
+                    "안타": game_result['loser_team_total_hits'],
+                    "홈런": game_result['loser_team_total_home_runs'],
+                    "도루": game_result['loser_team_total_stolen_bases'],
+                    "삼진": game_result['loser_team_total_strikeouts'],
+                    "병살": game_result['loser_team_total_double_plays'],
+                    "실책": game_result['loser_team_total_errors'],
+                }
+            },
+            "경기 기록": {
+                "승": game_result['winning_pitcher_id'],  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
+                "패": game_result['losing_pitcher_id'],  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
+                "홀": game_result['hold_pitcher_ids'],  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
+                "세": game_result['save_pitcher_id'],  # 선수 이름을 데이터베이스에서 추가로 가져와야 합니다.
+                "결승타": game_result['deciding_hit'],
+                "홈런": game_result['home_run'],
+                "2루타": game_result['hit_base2'],
+                "3루타": game_result['hit_base3'],
+                "실책": game_result['game_error'],
+                "주루사": game_result['base_running_out'],
+                "병살타": game_result['double_play_hit'],
+            }
+        }
+    }
+    return game_record
 
 def show_game_results(game_id):
-    result = result_mock_data.get(game_id, {})
-    if not result:
-        st.write("경기 결과가 없습니다.")
-        return
-
+    # result = result_mock_data.get(game_id, {})
+    # if not result:
+    #     st.write("경기 결과가 없습니다.")
+    #     return
+    
+    response = requests.post("http://localhost:3000/api/game/result", json={'game_id': game_id})
+    game_result = response.json()
+    result = transform_game_result_to_mock_data(game_result).get(game_id)
     team_record = result.get("팀 기록", {})
     game_record = result.get("경기 기록", {})
 
     st.subheader("팀 기록")
     team_df = pd.DataFrame.from_dict(
         team_record, orient='index').reset_index().rename(columns={'index': '구분'})
-    st.dataframe(team_df)
 
-    st.subheader("경기 기록")
-    for key, value in game_record.items():
-        st.write(f"**{key}**: {value}")
+
+    if st.session_state.get('role') == 'manager':
+        edited_team_df = st.data_editor(team_df, use_container_width=True, key=f"{game_id} team_record")
+        st.subheader("경기 기록")
+        for key, value in game_record.items():
+            value = st.text_input(f"{key}", value, key=f'{game_id} {key}')
+            game_record[key] = value
+            st.write(f"**{key}**: {value}")
+        
+        if st.button('경기 기록 저장', key=f"save_button_{game_id}"):
+            updated_data = {
+                "game_id": game_id,
+                "winner_team_id": get_team_id(edited_team_df.at[0, '팀명']),
+                "loser_team_id": get_team_id(edited_team_df.at[1, '팀명']),
+                "winner_team_total_score": int(edited_team_df.at[0, '점수']),
+                "winner_team_total_hits": int(edited_team_df.at[0, '안타']),
+                "winner_team_total_home_runs": int(edited_team_df.at[0, '홈런']),
+                "winner_team_total_stolen_bases": int(edited_team_df.at[0, '도루']),
+                "winner_team_total_strikeouts": int(edited_team_df.at[0, '삼진']),
+                "winner_team_total_double_plays": int(edited_team_df.at[0, '병살']),
+                "winner_team_total_errors": int(edited_team_df.at[0,'실책']),
+                "loser_team_total_score": int(edited_team_df.at[1, '점수']),
+                "loser_team_total_hits": int(edited_team_df.at[1, '안타']),
+                "loser_team_total_home_runs": int(edited_team_df.at[1, '홈런']),
+                "loser_team_total_stolen_bases": int(edited_team_df.at[1, '도루']),
+                "loser_team_total_strikeouts": int(edited_team_df.at[1, '삼진']),
+                "loser_team_total_double_plays": int(edited_team_df.at[1, '병살']),
+                "loser_team_total_errors": int(edited_team_df.at[1, '실책']),
+                "winning_pitcher_id": game_record['승'],
+                "losing_pitcher_id": game_record['패'],
+                "hold_pitcher_ids": game_record['홀'],
+                "save_pitcher_id": game_record['세'],
+                "deciding_hit": game_record['결승타'],
+                "home_run": game_record['홈런'],
+                "hit_base2": game_record['2루타'],
+                "hit_base3": game_record['3루타'],
+                "game_error": game_record['실책'],
+                "base_running_out": game_record['주루사'],
+                "double_play_hit": game_record['병살타']
+            }
+
+            # Send the updated data to the backend
+            patch_response = requests.patch("http://localhost:3000/api/results/update", json=updated_data)
+            if patch_response.status_code == 200:
+                st.success("Game result updated successfully!")
+            else:
+                st.error("Failed to update game result.")
+    
+
+    else:
+        st.dataframe(team_df)
+        st.subheader("경기 기록")
+        for key, value in game_record.items():
+            st.write(f"**{key}**: {value}")
+
+    # st.subheader("경기 기록")
+    # for key, value in game_record.items():
+    #     if st.session_state.get('role') == 'manager':
+    #         value = st.text_input(f"{game_id} {key}", value)
+    #         game_record[key] = value
+    #     st.write(f"**{key}**: {value}")
 
 
 def show_today_games():
@@ -302,6 +418,8 @@ def show_today_games():
         today_games_df.rename(columns={'team_away_id': '원정 팀'}, inplace=True)
         today_games_df.rename(columns={'team_home_id': '홈 팀'}, inplace=True)
 
+        today_games_final_df = today_games_df.drop(['Date', 'Time'], axis=1)
+
         st.subheader(team + " 경기 일정")
 
         column_config = {
@@ -312,7 +430,7 @@ def show_today_games():
             "memo": st.column_config.Column(width=400)  # memo 열의 너비를 300으로 설정
         }
 
-        st.dataframe(today_games_df, hide_index=True,
+        st.dataframe(today_games_final_df, hide_index=True,
                      column_config=column_config, use_container_width=True)
 
         st.markdown(
@@ -374,44 +492,37 @@ def show_today_games():
         # Load image
         image_path = "assets/bears.jpg"
 
-        # Data for the games
-        games = {
-            "Date": ["7.26. (금)", "7.26. (금)", "7.26. (금)", "7.26. (금)", "7.27. (토)", "7.27. (토)", "7.27. (토)", "7.27. (토)"],
-            "Time": ["오후 6:30", "오후 6:30", "오후 6:30", "오후 6:30", "오후 6:00", "오후 6:00", "오후 6:00", "오후 6:00"],
-            "Team 1": ["KIA", "롯데", "두산", "KT", "KT", "롯데", "한화", "KIA"],
-            "Team 2": ["키움", "NC", "SSG", "삼성", "KIA", "NC", "LG", "키움"]
-        }
+        games_df = today_games_df.drop(['날짜 및 시간', '장소', 'memo'], axis=1)
 
-        # Create a DataFrame
-        df = pd.DataFrame(games)
-
+        st.markdown("<br>", unsafe_allow_html=True)
         # Layout the games in a table-like format
-        for date in df["Date"].unique():
-            st.markdown(f"### {date}")
+        st.subheader("다음 경기 일정")
+        for date in games_df["Date"].unique():
+            st.markdown(f"---\n### {date}")
 
-            day_games = df[df["Date"] == date]
+            day_games = games_df[games_df["Date"] == date]
 
             for idx, game in day_games.iterrows():
                 col1, col2, col3 = st.columns([1, 1, 1])
 
                 with col1:
                     st.image(image_path, width=50)
-                    st.markdown(f"**{game['Team 1']}**")
+                    st.markdown(f"**{game['원정 팀']}**")
 
                 with col2:
                     st.markdown(f"{game['Time']}")
 
                 with col3:
                     st.image(image_path, width=50)
-                    st.markdown(f"**{game['Team 2']}**")
+                    st.markdown(f"**{game['홈 팀']}**")
 
-    with col2:
-        st.subheader("가상의 야구 선수 라인업 데이터")
-        # 가상의 선수 데이터 생성
-        fictional_lineup_data = {
-            "Position": ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF"],
-            "Name": ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6", "Player7", "Player8", "Player9"]
-        }
+    # with col2:
+    #     st.subheader("가상의 야구 선수 라인업 데이터")
+    #     # 가상의 선수 데이터 생성
+    #     fictional_lineup_data = {
+    #         "Position": ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF"],
+    #         "Name": ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6", "Player7", "Player8", "Player9"]
+    #     }
 
-        fictional_lineup_df = pd.DataFrame(fictional_lineup_data)
-        st.table(fictional_lineup_df)
+    #     fictional_lineup_df = pd.DataFrame(fictional_lineup_data)
+    #     st.table(fictional_lineup_df)
